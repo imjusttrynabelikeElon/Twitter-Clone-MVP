@@ -17,8 +17,10 @@
 		C92812C32A12BB4000694E5C /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92812C22A12BB4000694E5C /* CustomPresentationController.swift */; };
 		C932A88B2A0CFCA400C5E132 /* twitterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C932A88A2A0CFCA400C5E132 /* twitterTabBar.swift */; };
 		C93C32792A03673F005C0B9D /* twitterHomeFeedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93C32782A03673F005C0B9D /* twitterHomeFeedTableView.swift */; };
+		C94187AB2A188CC600E4C3C3 /* TwiiterProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */; };
+		C94187AD2A18989C00E4C3C3 /* kbb.png in Resources */ = {isa = PBXBuildFile; fileRef = C94187AC2A18989C00E4C3C3 /* kbb.png */; };
+		C94187AF2A18A64B00E4C3C3 /* KB.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C94187AE2A18A64B00E4C3C3 /* KB.jpg */; };
 		C94B816A2A14528200BE14C7 /* twitterBlue.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = C94B81692A14528200BE14C7 /* twitterBlue.jpeg */; };
-		C94B85E02A05761A00DB0476 /* kb.png in Resources */ = {isa = PBXBuildFile; fileRef = C94B85DF2A05761A00DB0476 /* kb.png */; };
 		C94B85E22A05791400DB0476 /* nba.png in Resources */ = {isa = PBXBuildFile; fileRef = C94B85E12A05791400DB0476 /* nba.png */; };
 		C94B85E62A05798800DB0476 /* google.png in Resources */ = {isa = PBXBuildFile; fileRef = C94B85E52A05798700DB0476 /* google.png */; };
 		C94B85EE2A05953400DB0476 /* E.webp in Resources */ = {isa = PBXBuildFile; fileRef = C94B85E72A05917B00DB0476 /* E.webp */; };
@@ -55,8 +57,10 @@
 		C92812C22A12BB4000694E5C /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
 		C932A88A2A0CFCA400C5E132 /* twitterTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = twitterTabBar.swift; sourceTree = "<group>"; };
 		C93C32782A03673F005C0B9D /* twitterHomeFeedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = twitterHomeFeedTableView.swift; sourceTree = "<group>"; };
+		C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwiiterProfileView.swift; sourceTree = "<group>"; };
+		C94187AC2A18989C00E4C3C3 /* kbb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kbb.png; sourceTree = "<group>"; };
+		C94187AE2A18A64B00E4C3C3 /* KB.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = KB.jpg; sourceTree = "<group>"; };
 		C94B81692A14528200BE14C7 /* twitterBlue.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = twitterBlue.jpeg; sourceTree = "<group>"; };
-		C94B85DF2A05761A00DB0476 /* kb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kb.png; sourceTree = "<group>"; };
 		C94B85E12A05791400DB0476 /* nba.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nba.png; sourceTree = "<group>"; };
 		C94B85E52A05798700DB0476 /* google.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = google.png; path = ../../../google.png; sourceTree = "<group>"; };
 		C94B85E72A05917B00DB0476 /* E.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = E.webp; sourceTree = "<group>"; };
@@ -145,13 +149,14 @@
 				C992F7C729FF28A2004C1BB4 /* LaunchScreen.storyboard */,
 				C95D5FBC2A0F79A50049E1E0 /* twitterLaunch.png */,
 				C992F7D029FF2C74004C1BB4 /* twitterLogo.png */,
+				C94187AC2A18989C00E4C3C3 /* kbb.png */,
 				C992F7CA29FF28A2004C1BB4 /* Info.plist */,
 				C94B85E72A05917B00DB0476 /* E.webp */,
 				C94B81692A14528200BE14C7 /* twitterBlue.jpeg */,
 				C951BB662A11C3F5002FA7A8 /* defaultProfile.png */,
 				C992F7D429FF8BA0004C1BB4 /* appleLogo.png */,
 				C992F7D229FF8B9C004C1BB4 /* googleLogo.png */,
-				C94B85DF2A05761A00DB0476 /* kb.png */,
+				C94187AE2A18A64B00E4C3C3 /* KB.jpg */,
 				C900FE772A01ED1A00A2AB10 /* addTweet.jpg */,
 				C94B85E52A05798700DB0476 /* google.png */,
 				C94B85E12A05791400DB0476 /* nba.png */,
@@ -166,6 +171,7 @@
 			children = (
 				C992F7D72A002FCA004C1BB4 /* TwitterSignUpHomePage.swift */,
 				C951BB682A12AF16002FA7A8 /* TwitterProfileSideViewController.swift */,
+				C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */,
 				C94EC0FF2A0862D300DF7C9F /* TwitterHomeViewDetailViewController.swift */,
 				C992F7D92A0054AB004C1BB4 /* TwitterHomePage.swift */,
 				C9583C652A0092D000073538 /* DirectMessagesView.swift */,
@@ -252,11 +258,12 @@
 				C951BB672A11C3F5002FA7A8 /* defaultProfile.png in Resources */,
 				C992F7C629FF28A2004C1BB4 /* Assets.xcassets in Resources */,
 				C992F7D129FF2C74004C1BB4 /* twitterLogo.png in Resources */,
+				C94187AF2A18A64B00E4C3C3 /* KB.jpg in Resources */,
 				C992F7C129FF28A1004C1BB4 /* Main.storyboard in Resources */,
 				C94B85E22A05791400DB0476 /* nba.png in Resources */,
+				C94187AD2A18989C00E4C3C3 /* kbb.png in Resources */,
 				C94B816A2A14528200BE14C7 /* twitterBlue.jpeg in Resources */,
 				C94B85E62A05798800DB0476 /* google.png in Resources */,
-				C94B85E02A05761A00DB0476 /* kb.png in Resources */,
 				C900FE7C2A01F59200A2AB10 /* addTweet.png in Resources */,
 				C992F7D529FF8BA0004C1BB4 /* appleLogo.png in Resources */,
 			);
@@ -274,6 +281,7 @@
 				C9204A1C2A0194A800CF214A /* CustomTabBar.swift in Sources */,
 				C9583C6A2A00997600073538 /* TwitterSpacesView.swift in Sources */,
 				C992F7BA29FF28A1004C1BB4 /* AppDelegate.swift in Sources */,
+				C94187AB2A188CC600E4C3C3 /* TwiiterProfileView.swift in Sources */,
 				C951BB692A12AF16002FA7A8 /* TwitterProfileSideViewController.swift in Sources */,
 				C9204A172A010AE400CF214A /* createAccountPage.swift in Sources */,
 				C93C32792A03673F005C0B9D /* twitterHomeFeedTableView.swift in Sources */,

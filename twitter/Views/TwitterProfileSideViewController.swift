@@ -17,8 +17,12 @@ struct sideProfileData {
     var followerName: String
 }
 
-class TwitterProfileSideViewController: UIViewController {
+
+
+class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate {
     
+    
+    let twitterProfileView = TwitterProfileView()
     let twitterHomeFeed = twitterHomeFeedTableView()
     let secProfileImageForSideView = UIImageView()
     let secprofileImageForSideViewName = UILabel()
@@ -42,6 +46,22 @@ class TwitterProfileSideViewController: UIViewController {
     
     let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: "21",followingName: "Following", followerNumber: "233,000", followerName: "Followers")
     
+    @objc func profileImageTapped() {
+           let profileVC = TwitterProfileView()
+           profileVC.delegate = self
+           
+           let nav = UINavigationController(rootViewController: profileVC)
+           nav.modalPresentationStyle = .overFullScreen
+        nav.modalTransitionStyle =  .crossDissolve
+           present(nav, animated: true)
+       }
+       
+       func didTapBackButton() {
+           dismiss(animated: true, completion: nil)
+          
+       }
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +72,9 @@ class TwitterProfileSideViewController: UIViewController {
         secProfileImageForSideView.tintColor = .systemBlue
         view.addSubview(secProfileImageForSideView)
         
-        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        secProfileImageForSideView.isUserInteractionEnabled = true
+        secProfileImageForSideView.addGestureRecognizer(tapGesture2)
         NSLayoutConstraint.activate([
             secProfileImageForSideView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 160),
             secProfileImageForSideView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -540),
@@ -136,6 +158,10 @@ class TwitterProfileSideViewController: UIViewController {
         ])
         
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        secprofileImageForSideViewName.isUserInteractionEnabled = true
+        secprofileImageForSideViewName.addGestureRecognizer(tapGesture)
+
         secprofileImageForSideViewName.text = "Profile"
         secprofileImageForSideViewName.translatesAutoresizingMaskIntoConstraints = false
         

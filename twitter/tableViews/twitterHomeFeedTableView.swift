@@ -316,6 +316,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         // Access the tab bar controller's view instead of the current view
         guard let tabBarController = self.tabBarController else { return }
         tabBarController.view.clipsToBounds = false // Allow the image view to be visible outside the bounds of the view
+        
         profileImageView.layer.masksToBounds = false
 
         profileImageView.layer.cornerRadius = 23.0
