@@ -22,8 +22,13 @@ struct editProfile {
     var locationImage: UIImageView?
     var link: String?
     var linkImage: UIImageView?
-    var dateJoined: String?
+    var dateJoinedImage: UIImageView
+    var joined: String
+    var dateJoined: String
     var dateOfBirth: String?
+    var followers: Int?
+    var following: Int?
+
     
 }
 
@@ -43,6 +48,11 @@ class TwitterProfileView: UIViewController {
     var profileLocationImage = UIImageView()
     var profileBio = UILabel()
     var linkTextView = UITextView()
+    var profileDateJoinedImageView = UIImageView()
+     var profileJoined = UILabel()
+     var profileDateJoined = UILabel()
+     var profileFollowers = UILabel()
+     var profileFollowing = UILabel()
     var profileLinkImage = UIImageView()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
     var editProfileDefaults: editProfile!
@@ -63,7 +73,7 @@ class TwitterProfileView: UIViewController {
         configureTwitterImageHeaderView()
         configureProfileImagePic()
         
-        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")))
+        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023")
         
        
         configure(with: editProfileDefaults)
@@ -71,54 +81,114 @@ class TwitterProfileView: UIViewController {
     //    configureLinkTextView(with: editProfileDefaults)
         configureSearchButton()
         configureTwitterName()
+        configureDateImage()
       //  configureLinkTextView(with: editProfileDefaults)
         print(twitterHomeFeedVC.tweets[0].name)
         print(twitterHomeFeedVC.tweets[0].userName)
     }
 
     func configure(with editProfilee: editProfile) {
-        twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
-        profileImagePic.image = editProfileDefaults.profileImagePic?.image
-        profileName.text = editProfilee.Name
-        profileUserName.text = editProfilee.userName
-        profileLocation.text = editProfilee.location
-        profileLocationImage.image = editProfilee.locationImage?.image
-        profileLinkImage.image = editProfilee.linkImage?.image
-        linkTextView.text = editProfilee.link
-        profileBio.text = editProfilee.Bio
-        
-        configureTwitterImageHeaderView()
-        configureProfileImagePic()
-        configureTwitterName()
-        configureTwitterUserName()
-        configureTwitterLocation()
-        configureTwitterLocationImage()
-        configureProfileBio()
-        configureProfileLinkImage()
-    }
-
-    func configureLinkTextView(with profile: editProfile) {
+         twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
+         profileImagePic.image = editProfileDefaults.profileImagePic?.image
+         profileName.text = editProfilee.Name
+         profileUserName.text = editProfilee.userName
+         profileLocation.text = editProfilee.location
+         profileLocationImage.image = editProfilee.locationImage?.image
+         profileLinkImage.image = editProfilee.linkImage?.image
+         linkTextView.text = editProfilee.link
+         profileBio.text = editProfilee.Bio
+        profileDateJoinedImageView.image = editProfilee.dateJoinedImage.image
+         profileJoined.text = editProfilee.joined
+         profileDateJoined.text = editProfilee.dateJoined
+         
+         configureTwitterImageHeaderView()
+         configureProfileImagePic()
+         configureTwitterName()
+         configureTwitterUserName()
+         configureTwitterLocation()
+         configureTwitterLocationImage()
+         configureProfileBio()
+         configureProfileLinkImage()
+         configureDateImage()
+         configureDateJoinedWord()
+         configureDateJoined()
+    
+     }
      
-        linkTextView.translatesAutoresizingMaskIntoConstraints = false
+     func configureDateJoined() {
+         profileDateJoined.isUserInteractionEnabled = true
+         profileDateJoined.translatesAutoresizingMaskIntoConstraints = false
+         
+         view.addSubview(profileDateJoined)
+         
+         
+         NSLayoutConstraint.activate([
+             profileDateJoined.widthAnchor.constraint(equalToConstant: 699),
+             profileDateJoined.heightAnchor.constraint(equalToConstant: 293),
+             profileDateJoined.topAnchor.constraint(equalTo: profileLocationImage.bottomAnchor, constant: -103),
+             profileDateJoined.leadingAnchor.constraint(equalTo: profileJoined.trailingAnchor, constant: -138)
+         
+         ])
+     }
+     
+     
+     func configureDateJoinedWord() {
+         profileJoined.isUserInteractionEnabled = true
+         profileJoined.translatesAutoresizingMaskIntoConstraints = false
+         
+         view.addSubview(profileJoined)
+         
+         NSLayoutConstraint.activate([
+             profileJoined.widthAnchor.constraint(equalToConstant: 200),
+             profileJoined.heightAnchor.constraint(equalToConstant: 133),
+             profileJoined.topAnchor.constraint(equalTo: profileLocation.bottomAnchor, constant: -79),
+             profileJoined.leadingAnchor.constraint(equalTo: profileDateJoinedImageView.trailingAnchor, constant: 13)
+         ])
+     }
+     
+     func configureDateImage() {
+         
+         
+         profileDateJoinedImageView.isUserInteractionEnabled = true
+         profileDateJoinedImageView.translatesAutoresizingMaskIntoConstraints = false
+         
+         view.addSubview(profileDateJoinedImageView)
+         
+         NSLayoutConstraint.activate([
+             profileDateJoinedImageView.widthAnchor.constraint(equalToConstant: 29),
+             profileDateJoinedImageView.heightAnchor.constraint(equalToConstant: 29),
+             profileDateJoinedImageView.topAnchor.constraint(equalTo: profileLocationImage.bottomAnchor, constant: 29),
+             profileDateJoinedImageView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35)
+         
+         ])
+         
+     
+         
+     }
+    
+    func configureLinkTextView(with profile: editProfile) {
         
-        if let link = profile.link {
-            let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: URL(string: link)!])
-            linkTextView.attributedText = attributedString
-            linkTextView.text = link
-        }
-        
-        linkTextView.isUserInteractionEnabled = true
-        linkTextView.isEditable = false
-        
-        view.addSubview(linkTextView)
-        
-        NSLayoutConstraint.activate([
-            linkTextView.widthAnchor.constraint(equalToConstant: 330),
-            linkTextView.heightAnchor.constraint(equalToConstant: 73),
-            linkTextView.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 50),
-            linkTextView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 500)
-        ])
-    }
+           linkTextView.translatesAutoresizingMaskIntoConstraints = false
+           
+           if let link = profile.link {
+               let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: URL(string: link)!])
+               linkTextView.attributedText = attributedString
+               linkTextView.text = link
+           }
+           
+           linkTextView.isUserInteractionEnabled = true
+           linkTextView.isEditable = false
+           
+           view.addSubview(linkTextView)
+           
+           NSLayoutConstraint.activate([
+               linkTextView.widthAnchor.constraint(equalToConstant: 330),
+               linkTextView.heightAnchor.constraint(equalToConstant: 23),
+               linkTextView.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 50),
+               linkTextView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 500)
+           ])
+       }
+
 
 
     func configureProfileLinkImage() {

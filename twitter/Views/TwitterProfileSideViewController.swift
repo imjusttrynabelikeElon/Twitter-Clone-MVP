@@ -44,7 +44,7 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     let twitterCircle =  UIImageView()
     let twitterCircleName = UILabel()
     
-    let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233, followerName: "Followers")
+    let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
     
     @objc func profileImageTapped() {
         let profileVC = twitterProfileView // Use the existing instance
