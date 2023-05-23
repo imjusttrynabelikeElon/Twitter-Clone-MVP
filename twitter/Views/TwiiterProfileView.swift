@@ -30,8 +30,8 @@ struct editProfile {
     var followersName: String
     var following: Int
     var followingName: String
+    var editProfileButton: UIButton
 
-    
 }
 
 protocol TwitterProfileViewDelegate: AnyObject {
@@ -58,6 +58,7 @@ class TwitterProfileView: UIViewController {
     var profileFollowing = UILabel()
     var profileFollowingName = UILabel()
     var profileLinkImage = UIImageView()
+    let profileEditButton = UIButton()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
   
     var editProfileDefaults: editProfile!
@@ -80,7 +81,7 @@ class TwitterProfileView: UIViewController {
         configureTwitterImageHeaderView()
         configureProfileImagePic()
         
-        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName)
+        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName, editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
         
        
         configure(with: editProfileDefaults)
@@ -111,25 +112,51 @@ class TwitterProfileView: UIViewController {
         profileFollowing.text = "\(editProfilee.following)"
         profileFollowersName.text = editProfilee.followersName
         profileFollowingName.text = editProfilee.followingName
-         
+        profileEditButton.setTitle("Edit profile", for: .normal)
+        
          configureTwitterImageHeaderView()
          configureProfileImagePic()
          configureTwitterName()
          configureTwitterUserName()
-         configureTwitterLocation()
-         configureTwitterLocationImage()
          configureProfileBio()
+         configureTwitterLocationImage()
+         configureTwitterLocation()
          configureProfileLinkImage()
          configureDateImage()
          configureDateJoinedWord()
          configureDateJoined()
+         configureProfileFollowing()
+         configureProfileFollowingName()
          configureProfileFollowers()
          configureProfileFollowersName()
-        configureProfileFollowingName()
-         configureProfileFollowing()
-       
-    
+         configureEditProfileButton()
      }
+    
+  
+    func configureEditProfileButton() {
+        profileEditButton.isUserInteractionEnabled = true
+        profileEditButton.translatesAutoresizingMaskIntoConstraints = false
+
+        profileEditButton.layer.borderWidth = 3.0 // Adjust the border width as needed
+        profileEditButton.layer.borderColor = UIColor.black.cgColor
+
+        profileEditButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+
+        profileEditButton.setTitleColor(.black, for: .normal)
+
+        // Adjust the content insets to create spacing between the border and the text
+        profileEditButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+
+        view.addSubview(profileEditButton)
+
+        NSLayoutConstraint.activate([
+            profileEditButton.topAnchor.constraint(equalTo: twitterImageHeaderView.bottomAnchor, constant: 11),
+            profileEditButton.leadingAnchor.constraint(equalTo: profileImagePic.trailingAnchor, constant: 183)
+        ])
+    }
+
+
+    
     
     func configureProfileFollowingName() {
         profileFollowingName.isUserInteractionEnabled = true
@@ -139,8 +166,8 @@ class TwitterProfileView: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            profileFollowingName.topAnchor.constraint(equalTo: profileFollowers.topAnchor, constant: 0),
-            profileFollowingName.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -187)
+            profileFollowingName.topAnchor.constraint(equalTo: profileFollowing.topAnchor, constant: 0),
+            profileFollowingName.leadingAnchor.constraint(equalTo: profileFollowing.leadingAnchor, constant: 36)
         ])
     }
      
@@ -152,8 +179,8 @@ class TwitterProfileView: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            profileFollowing.topAnchor.constraint(equalTo: profileFollowersName.topAnchor, constant: 0),
-            profileFollowing.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -230)
+            profileFollowing.topAnchor.constraint(equalTo: view.topAnchor, constant: 400),
+            profileFollowing.leadingAnchor.constraint(equalTo: profileLocationImage.leadingAnchor, constant: -2)
         ])
     }
     
@@ -180,8 +207,8 @@ class TwitterProfileView: UIViewController {
         NSLayoutConstraint.activate([
           
             
-            profileFollowers.topAnchor.constraint(equalTo: profileLocation.bottomAnchor, constant: 30),
-            profileFollowers.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -387)
+            profileFollowers.topAnchor.constraint(equalTo: profileFollowing.topAnchor, constant: 0),
+            profileFollowers.leadingAnchor.constraint(equalTo: profileFollowing.leadingAnchor, constant: 119)
         
         ])
     }
@@ -195,8 +222,8 @@ class TwitterProfileView: UIViewController {
          NSLayoutConstraint.activate([
              profileDateJoined.widthAnchor.constraint(equalToConstant: 699),
              profileDateJoined.heightAnchor.constraint(equalToConstant: 293),
-             profileDateJoined.topAnchor.constraint(equalTo: profileLocationImage.bottomAnchor, constant: -103),
-             profileDateJoined.leadingAnchor.constraint(equalTo: profileJoined.trailingAnchor, constant: -138)
+             profileDateJoined.topAnchor.constraint(equalTo: profileJoined.topAnchor, constant: -80),
+             profileDateJoined.leadingAnchor.constraint(equalTo: profileJoined.trailingAnchor, constant: -143)
          
          ])
      }
@@ -211,8 +238,8 @@ class TwitterProfileView: UIViewController {
          NSLayoutConstraint.activate([
              profileJoined.widthAnchor.constraint(equalToConstant: 200),
              profileJoined.heightAnchor.constraint(equalToConstant: 133),
-             profileJoined.topAnchor.constraint(equalTo: profileLocation.bottomAnchor, constant: -79),
-             profileJoined.leadingAnchor.constraint(equalTo: profileDateJoinedImageView.trailingAnchor, constant: 13)
+             profileJoined.topAnchor.constraint(equalTo: profileDateJoinedImageView.topAnchor, constant: -52),
+             profileJoined.leadingAnchor.constraint(equalTo: profileDateJoinedImageView.trailingAnchor, constant: 7)
          ])
      }
      
@@ -227,8 +254,8 @@ class TwitterProfileView: UIViewController {
          NSLayoutConstraint.activate([
              profileDateJoinedImageView.widthAnchor.constraint(equalToConstant: 29),
              profileDateJoinedImageView.heightAnchor.constraint(equalToConstant: 29),
-             profileDateJoinedImageView.topAnchor.constraint(equalTo: profileLocationImage.bottomAnchor, constant: 29),
-             profileDateJoinedImageView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35)
+             profileDateJoinedImageView.topAnchor.constraint(equalTo: profileLocationImage.topAnchor, constant: 32),
+             profileDateJoinedImageView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37)
          
          ])
          
@@ -237,27 +264,29 @@ class TwitterProfileView: UIViewController {
      }
     
     func configureLinkTextView(with profile: editProfile) {
+        linkTextView.translatesAutoresizingMaskIntoConstraints = false
         
-           linkTextView.translatesAutoresizingMaskIntoConstraints = false
-           
-           if let link = profile.link {
-               let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: URL(string: link)!])
-               linkTextView.attributedText = attributedString
-               linkTextView.text = link
-           }
-           
-           linkTextView.isUserInteractionEnabled = true
-           linkTextView.isEditable = false
-           
-           view.addSubview(linkTextView)
-           
-           NSLayoutConstraint.activate([
-               linkTextView.widthAnchor.constraint(equalToConstant: 330),
-               linkTextView.heightAnchor.constraint(equalToConstant: 23),
-               linkTextView.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 50),
-               linkTextView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 500)
-           ])
-       }
+        if let link = profile.link {
+            let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: URL(string: link)!])
+            linkTextView.attributedText = attributedString
+            linkTextView.text = link
+        }
+        
+        linkTextView.isUserInteractionEnabled = true
+        linkTextView.isEditable = false
+        
+        view.addSubview(linkTextView)
+        
+        NSLayoutConstraint.activate([
+            linkTextView.widthAnchor.constraint(equalToConstant: 330),
+            linkTextView.heightAnchor.constraint(equalToConstant: 23),
+            linkTextView.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 50),
+            linkTextView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 498)
+        ])
+        
+     
+    }
+
 
 
 
@@ -270,31 +299,30 @@ class TwitterProfileView: UIViewController {
         NSLayoutConstraint.activate([
             profileLinkImage.widthAnchor.constraint(equalToConstant: 23),
             profileLinkImage.heightAnchor.constraint(equalToConstant: 15),
-            profileLinkImage.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 58),
-            profileLinkImage.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 172)
+            profileLinkImage.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 58.8),
+            profileLinkImage.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 170)
         
         ])
     }
 
-    
     func configureProfileBio() {
-        
         profileBio.isUserInteractionEnabled = true
         profileBio.translatesAutoresizingMaskIntoConstraints = false
         profileBio.numberOfLines = 0
         profileBio.lineBreakMode = .byWordWrapping
-        
+
         view.addSubview(profileBio)
-        
-        
+
         NSLayoutConstraint.activate([
             profileBio.widthAnchor.constraint(equalToConstant: 300),
             profileBio.heightAnchor.constraint(equalToConstant: 233),
-            profileBio.topAnchor.constraint(equalTo: profileUserName.bottomAnchor, constant: -123),
+            profileBio.topAnchor.constraint(equalTo: profileUserName.bottomAnchor, constant: -128),
             profileBio.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 319)
-        
         ])
+
+     
     }
+
     
     func configureTwitterLocation() {
         profileLocation.isUserInteractionEnabled = true
@@ -306,8 +334,8 @@ class TwitterProfileView: UIViewController {
         NSLayoutConstraint.activate([
             profileLocation.widthAnchor.constraint(equalToConstant: 200),
             profileLocation.heightAnchor.constraint(equalToConstant: 133),
-            profileLocation.topAnchor.constraint(equalTo: profileUserName.bottomAnchor, constant: 3),
-            profileLocation.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 236)
+            profileLocation.topAnchor.constraint(equalTo: profileLocationImage.topAnchor, constant: -56),
+            profileLocation.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 239)
         
         ])
     }
@@ -322,8 +350,8 @@ class TwitterProfileView: UIViewController {
         NSLayoutConstraint.activate([
             profileLocationImage.widthAnchor.constraint(equalToConstant: 23),
             profileLocationImage.heightAnchor.constraint(equalToConstant: 23),
-            profileLocationImage.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 54),
-            profileLocationImage.trailingAnchor.constraint(equalTo: profileLocation.leadingAnchor, constant: -3)
+            profileLocationImage.topAnchor.constraint(equalTo: profileBio.bottomAnchor, constant: -77),
+            profileLocationImage.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35)
         
         ])
     }
@@ -339,7 +367,7 @@ class TwitterProfileView: UIViewController {
         
             profileUserName.widthAnchor.constraint(equalToConstant: 200),
             profileUserName.heightAnchor.constraint(equalToConstant: 133),
-            profileUserName.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: -100),
+            profileUserName.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: -110),
             profileUserName.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 216)
         
         ])
@@ -405,8 +433,8 @@ class TwitterProfileView: UIViewController {
         NSLayoutConstraint.activate([
         
             searchButton.widthAnchor.constraint(equalToConstant: 300),
-            searchButton.heightAnchor.constraint(equalToConstant: 300),
-            searchButton.topAnchor.constraint(equalTo: view.topAnchor, constant: -73),
+            searchButton.heightAnchor.constraint(equalToConstant: 50),
+            searchButton.topAnchor.constraint(equalTo: twitterImageHeaderView.topAnchor, constant: 51),
             searchButton.trailingAnchor.constraint(equalTo: twitterImageHeaderView.trailingAnchor, constant: 98)
         
         ])
@@ -417,6 +445,9 @@ class TwitterProfileView: UIViewController {
         super.viewDidLayoutSubviews()
         
         profileImagePic.layer.cornerRadius = profileImagePic.frame.width / 2.0
+        
+        // Set corner radius here when the frame is determined
+        profileEditButton.layer.cornerRadius = 13
     }
 
     @objc func profileImageTapped() {
