@@ -11,9 +11,9 @@ import UIKit
 struct sideProfileData {
     var name: String
     var userName: String
-    var followingNumber: String
+    var followingNumber: Int
     var followingName: String
-    var followerNumber: String
+    var followerNumber: Int
     var followerName: String
 }
 
@@ -44,17 +44,18 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     let twitterCircle =  UIImageView()
     let twitterCircleName = UILabel()
     
-    let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: "21",followingName: "Following", followerNumber: "233,000", followerName: "Followers")
+    let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233, followerName: "Followers")
     
     @objc func profileImageTapped() {
-           let profileVC = TwitterProfileView()
-           profileVC.delegate = self
-           
-           let nav = UINavigationController(rootViewController: profileVC)
-           nav.modalPresentationStyle = .overFullScreen
-        nav.modalTransitionStyle =  .crossDissolve
-           present(nav, animated: true)
-       }
+        let profileVC = twitterProfileView // Use the existing instance
+        profileVC.delegate = self
+
+        let nav = UINavigationController(rootViewController: profileVC)
+        nav.modalPresentationStyle = .overFullScreen
+        nav.modalTransitionStyle = .crossDissolve
+        present(nav, animated: true)
+    }
+
        
        func didTapBackButton() {
            dismiss(animated: true, completion: nil)
@@ -102,7 +103,7 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         
         ])
         
-        following.text = userData.followingNumber
+        following.text = "\(userData.followingNumber)"
         following.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(following)
         
@@ -124,7 +125,7 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         ])
         
         
-        followers.text = userData.followerNumber
+        followers.text = "\(userData.followerNumber)"
         followers.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(followers)
         
