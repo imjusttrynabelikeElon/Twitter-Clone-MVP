@@ -26,8 +26,10 @@ struct editProfile {
     var joined: String
     var dateJoined: String
     var dateOfBirth: String?
-    var followers: Int?
-    var following: Int?
+    var followers: Int
+    var followersName: String
+    var following: Int
+    var followingName: String
 
     
 }
@@ -49,12 +51,15 @@ class TwitterProfileView: UIViewController {
     var profileBio = UILabel()
     var linkTextView = UITextView()
     var profileDateJoinedImageView = UIImageView()
-     var profileJoined = UILabel()
-     var profileDateJoined = UILabel()
-     var profileFollowers = UILabel()
-     var profileFollowing = UILabel()
+    var profileJoined = UILabel()
+    var profileDateJoined = UILabel()
+    var profileFollowers = UILabel()
+    var profileFollowersName = UILabel()
+    var profileFollowing = UILabel()
+    var profileFollowingName = UILabel()
     var profileLinkImage = UIImageView()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
+  
     var editProfileDefaults: editProfile!
    
     @objc func backButtonTapped() {
@@ -63,6 +68,8 @@ class TwitterProfileView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let twitterSideProfileVC = TwitterProfileSideViewController()
         
         // Create a back button
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backButtonTapped))
@@ -73,7 +80,7 @@ class TwitterProfileView: UIViewController {
         configureTwitterImageHeaderView()
         configureProfileImagePic()
         
-        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023")
+        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName)
         
        
         configure(with: editProfileDefaults)
@@ -100,6 +107,10 @@ class TwitterProfileView: UIViewController {
         profileDateJoinedImageView.image = editProfilee.dateJoinedImage.image
          profileJoined.text = editProfilee.joined
          profileDateJoined.text = editProfilee.dateJoined
+        profileFollowers.text = "\(editProfilee.followers)"
+        profileFollowing.text = "\(editProfilee.following)"
+        profileFollowersName.text = editProfilee.followersName
+        profileFollowingName.text = editProfilee.followingName
          
          configureTwitterImageHeaderView()
          configureProfileImagePic()
@@ -112,9 +123,68 @@ class TwitterProfileView: UIViewController {
          configureDateImage()
          configureDateJoinedWord()
          configureDateJoined()
+         configureProfileFollowers()
+         configureProfileFollowersName()
+        configureProfileFollowingName()
+         configureProfileFollowing()
+       
     
      }
+    
+    func configureProfileFollowingName() {
+        profileFollowingName.isUserInteractionEnabled = true
+        profileFollowingName.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(profileFollowingName)
+        
+        
+        NSLayoutConstraint.activate([
+            profileFollowingName.topAnchor.constraint(equalTo: profileFollowers.topAnchor, constant: 0),
+            profileFollowingName.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -187)
+        ])
+    }
      
+    func configureProfileFollowing() {
+        profileFollowing.isUserInteractionEnabled = true
+        profileFollowing.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(profileFollowing)
+        
+        
+        NSLayoutConstraint.activate([
+            profileFollowing.topAnchor.constraint(equalTo: profileFollowersName.topAnchor, constant: 0),
+            profileFollowing.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -230)
+        ])
+    }
+    
+    
+    func configureProfileFollowersName() {
+        profileFollowersName.isUserInteractionEnabled = true
+        profileFollowersName.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileFollowersName)
+        
+        
+        NSLayoutConstraint.activate([
+        
+            profileFollowersName.topAnchor.constraint(equalTo: profileFollowers.topAnchor, constant: 0),
+            profileFollowersName.leadingAnchor.constraint(equalTo: profileFollowers.trailingAnchor, constant: 10)
+        
+        ])
+    }
+    
+    func configureProfileFollowers() {
+        profileFollowers.isUserInteractionEnabled = true
+        profileFollowers.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileFollowers)
+        
+        NSLayoutConstraint.activate([
+          
+            
+            profileFollowers.topAnchor.constraint(equalTo: profileLocation.bottomAnchor, constant: 30),
+            profileFollowers.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -387)
+        
+        ])
+    }
      func configureDateJoined() {
          profileDateJoined.isUserInteractionEnabled = true
          profileDateJoined.translatesAutoresizingMaskIntoConstraints = false
