@@ -39,7 +39,30 @@ protocol TwitterProfileViewDelegate: AnyObject {
 }
 
 
-class TwitterProfileView: UIViewController, EditProfileDelegate {
+class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate {
+   
+    func updateName(_ name: String) {
+         profileName.text = name
+     }
+     
+     func updateBio(_ bio: String) {
+         profileBio.text = bio
+     }
+    
+    let editProfileView: EditProfileView
+      
+      override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+          editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+          super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+      }
+      
+      required init?(coder aDecoder: NSCoder) {
+          editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+          super.init(coder: aDecoder)
+      }
+      
+ 
+
     
     // Implement EditProfileDelegate method
     func didUpdateProfileImage(_ image: UIImage?) {
@@ -77,6 +100,11 @@ class TwitterProfileView: UIViewController, EditProfileDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        editProfileView.delegatee = self // Set the delegate for name and bio updates
+        
+        
+        editProfileView.delegate = self // Set the delegate for profile image updates
         
         let twitterSideProfileVC = TwitterProfileSideViewController()
         
@@ -141,8 +169,14 @@ class TwitterProfileView: UIViewController, EditProfileDelegate {
          configureEditProfileButton()
      }
     
+    
+    
+    
   
     func configureEditProfileButton() {
+        
+        profileEditButton.addTarget(self, action: #selector(editProfileButtonTapped), for: .touchUpInside)
+        
         profileEditButton.isUserInteractionEnabled = true
         profileEditButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -166,17 +200,18 @@ class TwitterProfileView: UIViewController, EditProfileDelegate {
         ])
     }
     
-
     @objc func editProfileButtonTapped() {
         let editProfileView = EditProfileView(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
         editProfileView.delegate = self
+        
+        // Set initial values of name and bio from TwitterProfileView
+        editProfileView.name = profileName.text
+        editProfileView.bio = profileBio.text
+        
         let navigationController = UINavigationController(rootViewController: editProfileView)
         present(navigationController, animated: true, completion: nil)
     }
 
-
-
-    
     
     func configureProfileFollowingName() {
         profileFollowingName.isUserInteractionEnabled = true
