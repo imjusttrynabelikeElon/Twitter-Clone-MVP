@@ -39,7 +39,14 @@ protocol TwitterProfileViewDelegate: AnyObject {
 }
 
 
-class TwitterProfileView: UIViewController {
+class TwitterProfileView: UIViewController, EditProfileDelegate {
+    
+    // Implement EditProfileDelegate method
+    func didUpdateProfileImage(_ image: UIImage?) {
+        profileImagePic.image = image
+    }
+
+    
     weak var delegate: TwitterProfileViewDelegate?
     let twitterImageHeaderView = UIImageView()
     let searchButton = UIButton()
@@ -60,8 +67,9 @@ class TwitterProfileView: UIViewController {
     var profileLinkImage = UIImageView()
     let profileEditButton = UIButton()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
-  
     var editProfileDefaults: editProfile!
+    
+    
    
     @objc func backButtonTapped() {
         delegate?.didTapBackButton()
@@ -75,6 +83,7 @@ class TwitterProfileView: UIViewController {
         // Create a back button
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton
+        backButton.tintColor = .white
         
         view.backgroundColor = .white
         
@@ -147,6 +156,8 @@ class TwitterProfileView: UIViewController {
         // Adjust the content insets to create spacing between the border and the text
         profileEditButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
 
+        profileEditButton.addTarget(self, action: #selector(editProfileButtonTapped), for: .touchUpInside)
+
         view.addSubview(profileEditButton)
 
         NSLayoutConstraint.activate([
@@ -154,6 +165,15 @@ class TwitterProfileView: UIViewController {
             profileEditButton.leadingAnchor.constraint(equalTo: profileImagePic.trailingAnchor, constant: 183)
         ])
     }
+    
+
+    @objc func editProfileButtonTapped() {
+        let editProfileView = EditProfileView(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
+        editProfileView.delegate = self
+        let navigationController = UINavigationController(rootViewController: editProfileView)
+        present(navigationController, animated: true, completion: nil)
+    }
+
 
 
     
@@ -180,7 +200,7 @@ class TwitterProfileView: UIViewController {
         
         NSLayoutConstraint.activate([
             profileFollowing.topAnchor.constraint(equalTo: view.topAnchor, constant: 400),
-            profileFollowing.leadingAnchor.constraint(equalTo: profileLocationImage.leadingAnchor, constant: -2)
+            profileFollowing.leadingAnchor.constraint(equalTo: profileLocationImage.leadingAnchor, constant: 0)
         ])
     }
     
@@ -255,7 +275,7 @@ class TwitterProfileView: UIViewController {
              profileDateJoinedImageView.widthAnchor.constraint(equalToConstant: 29),
              profileDateJoinedImageView.heightAnchor.constraint(equalToConstant: 29),
              profileDateJoinedImageView.topAnchor.constraint(equalTo: profileLocationImage.topAnchor, constant: 32),
-             profileDateJoinedImageView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37)
+             profileDateJoinedImageView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38)
          
          ])
          
@@ -317,7 +337,7 @@ class TwitterProfileView: UIViewController {
             profileBio.widthAnchor.constraint(equalToConstant: 300),
             profileBio.heightAnchor.constraint(equalToConstant: 233),
             profileBio.topAnchor.constraint(equalTo: profileUserName.bottomAnchor, constant: -128),
-            profileBio.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 319)
+            profileBio.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 313)
         ])
 
      
@@ -351,7 +371,7 @@ class TwitterProfileView: UIViewController {
             profileLocationImage.widthAnchor.constraint(equalToConstant: 23),
             profileLocationImage.heightAnchor.constraint(equalToConstant: 23),
             profileLocationImage.topAnchor.constraint(equalTo: profileBio.bottomAnchor, constant: -77),
-            profileLocationImage.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35)
+            profileLocationImage.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34)
         
         ])
     }
