@@ -8,16 +8,20 @@
 import Foundation
 import UIKit
 
+// this is just the extension.
 
-extension TwitterProfileView {
+extension TwitterProfileView  {
     // Implement EditProfileDelegate methods
-      func didUpdateName(_ name: String) {
+      
+      func updateName(_ name: String) {
           profileName.text = name
+          UserDefaults.standard.set(name, forKey: "ProfileName")
       }
-
-      func didUpdateBio(_ bio: String) {
+      
+      func updateBio(_ bio: String) {
           profileBio.text = bio
+          UserDefaults.standard.set(bio, forKey: "ProfileBio")
       }
-
+      
 }
 

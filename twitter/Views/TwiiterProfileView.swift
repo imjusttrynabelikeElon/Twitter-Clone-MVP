@@ -40,15 +40,20 @@ protocol TwitterProfileViewDelegate: AnyObject {
 
 
 class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate {
+  
+    func didUpdateName(_ name: String) {
+          profileName.text = name
+          UserDefaults.standard.set(name, forKey: "ProfileName")
+      }
+
+      func didUpdateBio(_ bio: String) {
+          profileBio.text = bio
+          UserDefaults.standard.set(bio, forKey: "ProfileBio")
+      }
+  
+  
+  
    
-    func updateName(_ name: String) {
-         profileName.text = name
-     }
-     
-     func updateBio(_ bio: String) {
-         profileBio.text = bio
-     }
-    
     let editProfileView: EditProfileView
       
       override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -106,6 +111,18 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         
         editProfileView.delegate = self // Set the delegate for profile image updates
         
+        
+        // Retrieve the saved name and bio from UserDefaults
+            if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+                profileName.text = name
+            }
+            if let bio = UserDefaults.standard.string(forKey: "ProfileBio") {
+                profileBio.text = bio
+            }
+
+            // ...
+        
+        
         let twitterSideProfileVC = TwitterProfileSideViewController()
         
         // Create a back button
@@ -118,7 +135,9 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         configureTwitterImageHeaderView()
         configureProfileImagePic()
         
+        // Remove this line
         editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName, editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
+
         
        
         configure(with: editProfileDefaults)
@@ -133,6 +152,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     }
 
     func configure(with editProfilee: editProfile) {
+        
          twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
          profileImagePic.image = editProfileDefaults.profileImagePic?.image
          profileName.text = editProfilee.Name
@@ -167,6 +187,23 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
          configureProfileFollowers()
          configureProfileFollowersName()
          configureEditProfileButton()
+        
+        
+        // Retrieve the saved name and bio from UserDefaults
+        if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+            profileName.text = name
+            var updatedProfile = editProfilee
+            updatedProfile.Name = name // Update the name property
+                //     editProfilee = updatedProfile // Assign the updated profile back to the constant
+        }
+        if let bio = UserDefaults.standard.string(forKey: "ProfileBio") {
+            profileBio.text = bio
+            var updatedProfile = editProfilee
+            updatedProfile.Bio = bio // Update the bio property
+       //editProfilee = updatedProfile // Assign the updated profile back to the constant
+        }
+
+
      }
     
     
@@ -201,16 +238,16 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     }
     
     @objc func editProfileButtonTapped() {
-        let editProfileView = EditProfileView(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
-        editProfileView.delegate = self
-        
-        // Set initial values of name and bio from TwitterProfileView
-        editProfileView.name = profileName.text
-        editProfileView.bio = profileBio.text
-        
-        let navigationController = UINavigationController(rootViewController: editProfileView)
-        present(navigationController, animated: true, completion: nil)
-    }
+          let editProfileView = EditProfileView(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
+          editProfileView.delegate = self
+
+          // Set initial values of name and bio from TwitterProfileView
+          editProfileView.name = profileName.text
+          editProfileView.bio = profileBio.text
+
+          let navigationController = UINavigationController(rootViewController: editProfileView)
+          present(navigationController, animated: true, completion: nil)
+      }
 
     
     func configureProfileFollowingName() {

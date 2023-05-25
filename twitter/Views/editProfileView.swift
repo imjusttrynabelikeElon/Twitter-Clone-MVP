@@ -20,6 +20,7 @@ protocol ProfileDataDelegate: AnyObject {
     func updateBio(_ bio: String)
     
 
+    
 }
 
 class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate {
@@ -75,6 +76,8 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+      
+        
         saveButton?.isEnabled = false // Disable initially
         
         
@@ -84,9 +87,17 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         configureNameTextField() // Add this line to call the name text field configuration
         configureBioTextView() // Add this line to call the bio text view configuration
     
-        
-        nameTextField?.text = name // Assign the updated name value
-        bioTextView?.text = bio // Assign the updated bio value
+        // Retrieve the saved values from UserDefaults
+         if let savedName = UserDefaults.standard.string(forKey: "name") {
+             self.name = savedName
+             nameTextField?.text = savedName // Update the name text field with the saved name
+         }
+
+         if let savedBio = UserDefaults.standard.string(forKey: "bio") {
+             self.bio = savedBio
+             bioTextView?.text = savedBio // Update the bio text view with the saved bio
+         }
+
         
         view.backgroundColor = .black
         
@@ -118,26 +129,34 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         dismiss(animated: true, completion: nil)
     }
     
+    
+    
     @objc func saveButtonTapped() {
-        if let updatedName = updatedName, let updatedBio = updatedBio {
-            // Call the delegate methods to pass the updated data
-            delegate?.didUpdateName(updatedName)
-            delegate?.didUpdateBio(updatedBio)
+          if let updatedName = updatedName, let updatedBio = updatedBio {
+              // Call the delegate methods to pass the updated data
+              delegate?.didUpdateName(updatedName)
+              delegate?.didUpdateBio(updatedBio)
 
-            // Update the stored values
-            self.name = updatedName
-            self.bio = updatedBio
+              // Update the stored values
+              self.name = updatedName
+              self.bio = updatedBio
 
-            saveButton?.isEnabled = false // Disable the save button again after saving
-            
-            // Update the text fields with the updated values
-            nameTextField?.text = updatedName
-            bioTextView?.text = updatedBio
-        } else {
-            saveButton?.title = "Save"
-            saveButton?.isEnabled = true // Enable the save button
-        }
-    }
+              // Save the updated values to UserDefaults
+              UserDefaults.standard.set(updatedName, forKey: "name")
+              UserDefaults.standard.set(updatedBio, forKey: "bio")
+              UserDefaults.standard.synchronize() // Synchronize UserDefaults
+
+              saveButton?.isEnabled = false // Disable the save button again after saving
+
+              // Update the text fields with the updated values
+              nameTextField?.text = updatedName
+              bioTextView?.text = updatedBio
+          } else {
+              saveButton?.title = "Save"
+              saveButton?.isEnabled = true // Enable the save button
+          }
+      }
+
 
     func configureTitleLabel() {
         view.addSubview(titleLabel)
@@ -175,7 +194,7 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         if let text = textView.text {
             updatedBio = text // Update the updatedBio property with the updated text
             delegate?.didUpdateBio(text)
-            
+    
             // Update the bio text view
             bioTextView?.text = text
         }
@@ -195,50 +214,62 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
           }
       }
     
-    func configureNameTextField() {
-          // Create and add name text field
-          nameTextField = UITextField()
-          nameTextField!.delegate = self // Set the delegate to self
-          nameTextField!.placeholder = "Name"
-          nameTextField!.borderStyle = .roundedRect
-          nameTextField!.translatesAutoresizingMaskIntoConstraints = false
-          view.addSubview(nameTextField!)
-          NSLayoutConstraint.activate([
-              nameTextField!.topAnchor.constraint(equalTo: twitterProfileImageViewHeader.bottomAnchor, constant: 65),
-              nameTextField!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-              nameTextField!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-              nameTextField!.heightAnchor.constraint(equalToConstant: 40)
-          ])
+    func saveChanges() {
+          if let name = updatedName {
+              UserDefaults.standard.set(name, forKey: "name")
+              delegatee?.updateName(name) // Notify the delegate of the updated name
+          }
 
-          // Assign initial value to nameTextField
-          nameTextField!.text = name
+          if let bio = updatedBio {
+              UserDefaults.standard.set(bio, forKey: "bio")
+              delegatee?.updateBio(bio) // Notify the delegate of the updated bio
+          }
 
-          // Add an observer for the text field's text property to detect changes
-          nameTextField!.addTarget(self, action: #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
+          UserDefaults.standard.synchronize()
       }
+  
+    func configureNameTextField() {
+        // Create and add name text field
+        nameTextField = UITextField()
+        nameTextField!.delegate = self // Set the delegate to self
+        nameTextField!.placeholder = "Name"
+        nameTextField!.borderStyle = .roundedRect
+        nameTextField!.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nameTextField!)
+        NSLayoutConstraint.activate([
+            nameTextField!.topAnchor.constraint(equalTo: twitterProfileImageViewHeader.bottomAnchor, constant: 65),
+            nameTextField!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            nameTextField!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            nameTextField!.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
+        // Assign initial value to nameTextField
+        nameTextField!.text = name
+
+        // Add an observer for the text field's text property to detect changes
+        nameTextField!.addTarget(self, action: #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
+    }
 
     func configureBioTextView() {
-           // Create and add bio text view
-           bioTextView = UITextView()
-           bioTextView!.delegate = self // Set the delegate to self
-           bioTextView!.text = "Bio"
-           bioTextView!.layer.borderWidth = 1
-           bioTextView!.layer.borderColor = UIColor.lightGray.cgColor
-           bioTextView!.translatesAutoresizingMaskIntoConstraints = false
-           view.addSubview(bioTextView!)
-           NSLayoutConstraint.activate([
-               bioTextView!.topAnchor.constraint(equalTo: nameTextField!.bottomAnchor, constant: 20),
-               bioTextView!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-               bioTextView!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-               bioTextView!.heightAnchor.constraint(equalToConstant: 100)
-           ])
+        // Create and add bio text view
+        bioTextView = UITextView()
+        bioTextView!.delegate = self // Set the delegate to self
+        bioTextView!.text = bio
+        bioTextView!.layer.borderWidth = 1
+        bioTextView!.layer.borderColor = UIColor.lightGray.cgColor
+        bioTextView!.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bioTextView!)
+        NSLayoutConstraint.activate([
+            bioTextView!.topAnchor.constraint(equalTo: nameTextField!.bottomAnchor, constant: 20),
+            bioTextView!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            bioTextView!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            bioTextView!.heightAnchor.constraint(equalToConstant: 100)
+        ])
 
-           // Assign initial value to bioTextView
-           bioTextView!.text = bio
+        // Add an observer for the text view's text property to detect changes
+        bioTextView!.delegate = self
+    }
 
-           // Add an observer for the text view's text property to detect changes
-           bioTextView!.delegate = self
-       }
 
     
     func configureProfileImagePic() {
