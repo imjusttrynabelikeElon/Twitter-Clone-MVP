@@ -19,8 +19,31 @@ struct sideProfileData {
 
 
 
-class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate {
+class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate, ProfileDataDelegate {
     
+    func updateName(_ name: String) {
+          userData.name = name
+          self.name.text = name // Update the UI with the new name
+      }
+
+    
+    func updateBio(_ bio: String) {
+        
+    }
+    
+    
+     let editProfileView: EditProfileView
+       
+       override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+           editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+           super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+       }
+       
+       required init?(coder aDecoder: NSCoder) {
+           editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+           super.init(coder: aDecoder)
+       }
+       
     
     let twitterProfileView = TwitterProfileView()
     let twitterHomeFeed = twitterHomeFeedTableView()
@@ -44,7 +67,7 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     let twitterCircle =  UIImageView()
     let twitterCircleName = UILabel()
     
-    let userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
+    var userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
     
     @objc func profileImageTapped() {
         let profileVC = twitterProfileView // Use the existing instance
@@ -67,6 +90,9 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        editProfileView.delegatee = self
+        
+        
         
         secProfileImageForSideView.image = UIImage(systemName: "person.fill")
         secProfileImageForSideView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +110,32 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         
         ])
         
+        
+        // Create an instance of TwitterProfileView
+        let twitterProfileView = TwitterProfileView()
+        twitterProfileView.delegate = self
+
+        // Retrieve the saved name and set it in TwitterProfileView
+        if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+            twitterProfileView.profileName.text = name
+            print(twitterProfileView.profileName.text as Any)
+            
+            userData = sideProfileData(name: name, userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
+        }
+
+        // Add twitterProfileView as a subview
+     //   view.addSubview(twitterProfileView)
+
+        // ... (Add appropriate constraints to position and size twitterProfileView in the view hierarchy)
+
+        print(userData.name)
+
+    
+     
+        // ...
+
+        // ...
+    
         name.text = userData.name
         name.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(name)
