@@ -199,8 +199,6 @@ class TwitterHomeViewDetailViewController: UIViewController {
                 print("HTGDC")
                 label.sizeToFit()
                 
-                
-                
             }
             
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -549,7 +547,7 @@ class TwitterHomeViewDetailViewController: UIViewController {
                 view.addSubview(imageView)
             
                 if let nameToLoad = nameUILabel as UILabel?  {
-                    nameToLoad.numberOfLines = 0
+                  
                     nameToLoad.lineBreakMode = .byWordWrapping
                     print("UTFC")
                     nameToLoad.textAlignment = .center
@@ -558,12 +556,15 @@ class TwitterHomeViewDetailViewController: UIViewController {
                     view.addSubview(nameToLoad)
                     
                     if let namme = nameLabell {
-                        nameToLoad.text = namme
-                        print("Hi \(namme)")
-                        print("JYCG")
-                        nameToLoad.sizeToFit()
-                       // nameToLoad.backgroundColor = .white
+                        if namme.count > 15 {
+                            let endIndex = namme.index(namme.startIndex, offsetBy: 15)
+                            let truncatedName = namme[..<endIndex] + "..."
+                            nameToLoad.text = String(truncatedName)
+                        } else {
+                            nameToLoad.text = namme
+                        }
                     }
+
                     
                     NSLayoutConstraint.activate([
                         
@@ -571,7 +572,8 @@ class TwitterHomeViewDetailViewController: UIViewController {
                         nameToLoad.widthAnchor.constraint(equalToConstant: 200),
                         nameToLoad.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -500),
                         nameToLoad.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 200),
-                        nameToLoad.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -36)
+                        nameToLoad.centerYAnchor.constraint(equalTo: imageView.centerYAnchor), // Align the centerY of the label with the centerY of the imageView
+                         nameToLoad.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8), // Place the leading edge of the label after the trailing edge of the imageView with a small spacing
                         
                     ])
                     

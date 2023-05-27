@@ -26,7 +26,7 @@
 
 struct Tweet {
     
-    let name: String
+    var name: String
     let message: String
     let profileImageName: String
     let title: String
@@ -136,9 +136,11 @@ class MyTableViewCell: UITableViewCell {
             profileImageView.widthAnchor.constraint(equalToConstant: 50),
             profileImageView.heightAnchor.constraint(equalToConstant: 50),
             
+        
+            
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -16),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            nameLabel.trailingAnchor.constraint(equalTo: userNameLabel.leadingAnchor, constant: -16),
             nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
             
             userNameLabel.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 243),
@@ -270,7 +272,26 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let twitterProfileView = TwitterProfileView()
+        let maxCharacterLimit = 20 // Define your maximum character limit here
+
         
+   
+
+        
+        
+         // Retrieve the saved name and set it in TwitterProfileView
+         if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+             twitterProfileView.profileName.text = name
+             
+             print(twitterProfileView.profileName.text as Any)
+             
+             
+             tweets[0].name = name
+             
+         }
+
+         
        // performSegue(withIdentifier: "tweetCell", sender: self)
         
         tableView.delegate = self
@@ -361,7 +382,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     }
     
     
-    let tweets: [Tweet] = [
+    var tweets: [Tweet] = [
         
         Tweet(name: "Karon Bell", message: "Just learned how to program twitter. Im the person who just created this Twiiter clone. Its really not hard to code once you have the basics of coding down you just start to understand how these programs are made.", profileImageName: "kb", title: "", userName: "@karonbell", comments: "KUOH", numberOfComments: 44, retweet: "KIHUOL", numberOfRetweets: 63, likes: "IKUHU", numberOfLikes: 93, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "05/12/23", timePosted: "1:44pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
         

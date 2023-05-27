@@ -70,7 +70,7 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+                                                                   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -88,12 +88,12 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         // Retrieve the saved values from UserDefaults
          if let savedName = UserDefaults.standard.string(forKey: "name") {
              self.name = savedName
-             nameTextField?.text = savedName // Update the name text field with the saved name
+           //  nameTextField?.text = savedName // Update the name text field with the saved name
          }
 
          if let savedBio = UserDefaults.standard.string(forKey: "bio") {
              self.bio = savedBio
-             bioTextView?.text = savedBio // Update the bio text view with the saved bio
+           //  bioTextView?.text = savedBio // Update the bio text view with the saved bio
          }
 
         
@@ -118,8 +118,14 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
     // UITextFieldDelegate method called when editing begins in the text field
     func textFieldDidBeginEditing(_ textField: UITextField) {
             saveButton?.isEnabled = true // Enable the save button
+        print(textField.text as Any)
         }
-      
+    
+  
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        saveButton?.isEnabled = true
+        print(textView.text as Any)
+    }
       // ...
     
     
@@ -130,44 +136,31 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
     
     
     @objc func saveButtonTapped() {
-          if let updatedName = updatedName, let updatedBio = updatedBio {
-              // Call the delegate methods to pass the updated data
-              delegate?.didUpdateName(updatedName)
-              delegate?.didUpdateBio(updatedBio)
-
-              // Update the stored values
-              self.name = updatedName
-              self.bio = updatedBio
-
-              // Save the updated values to UserDefaults
-              UserDefaults.standard.set(updatedName, forKey: "name")
-              UserDefaults.standard.set(updatedBio, forKey: "bio")
-              UserDefaults.standard.synchronize() // Synchronize UserDefaults
-              // Call the delegate method to pass the updated name
-              delegatee?.updateName(updatedName)
-              
-           print("LOOK\(updatedName)")
-
-              saveButton?.isEnabled = false // Disable the save button again after saving
-
-              // Update the text fields with the updated values
-              nameTextField?.text = updatedName
-              bioTextView?.text = updatedBio
-              
-              
-          
-          } else {
-              saveButton?.title = "Save"
-              saveButton?.isEnabled = true // Enable the save button
-          }
-        
-        if let updatedName = updatedName {
-               delegate?.didUpdateName(updatedName) // Call the delegate method to pass the updated name
-               delegatee?.updateName(updatedName) // Call the delegate method in TwitterProfileSideViewController
-               // Rest of your code
-            print("JGVH G")
-           }
-      }
+        if let updatedName = updatedName, let updatedBio = updatedBio {
+            // Call the delegate methods to pass the updated data
+            delegate?.didUpdateName(updatedName)
+            delegatee?.updateBio(updatedBio)
+            
+            // Update the stored values
+            self.name = updatedName
+            self.bio = updatedBio
+            
+            // Save the updated values to UserDefaults
+            UserDefaults.standard.set(updatedName, forKey: "name")
+            UserDefaults.standard.set(updatedBio, forKey: "bio")
+            UserDefaults.standard.synchronize() // Synchronize UserDefaults
+            
+            saveButton?.isEnabled = false // Disable the save button again after saving
+            
+            // Update the text fields with the updated values
+            nameTextField?.text = updatedName
+            bioTextView?.text = updatedBio
+        } else {
+            saveButton?.title = "Save"
+            saveButton?.isEnabled = true // Enable the save button
+            
+        }
+    }
 
 
     func configureTitleLabel() {
@@ -197,35 +190,35 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
             updatedName = text // Update the updatedName property with the updated text
             delegate?.didUpdateName(text)
             
-            
+            print(textField.text as Any)
             
             // Update the name text field
-            nameTextField?.text = text
+         //nameTextField?.text = text
         }
     }
+    
+    
 
     func textViewDidChange(_ textView: UITextView) {
-        if let text = textView.text {
-            updatedBio = text // Update the updatedBio property with the updated text
-            delegate?.didUpdateBio(text)
-    
-            // Update the bio text view
-            bioTextView?.text = text
-        }
+       
+        print(textView.text as Any)
+        updatedBio = textView.text
+        delegate?.didUpdateBio(textView.text)
     }
 
 
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-          if textField == nameTextField {
-              updatedName = textField.text
-          }
+        if var text = textField.text {
+        //    text = updatedName!
+            delegate?.didUpdateName(text)
+        }
+        
+        saveButton?.isEnabled = true
       }
 
       func textViewDidEndEditing(_ textView: UITextView) {
-          if textView == bioTextView {
-              updatedBio = textView.text
-          }
+         
       }
     
     func saveChanges() {

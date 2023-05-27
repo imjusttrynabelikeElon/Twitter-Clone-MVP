@@ -114,15 +114,21 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         // Create an instance of TwitterProfileView
         let twitterProfileView = TwitterProfileView()
         twitterProfileView.delegate = self
+        
+        userData = sideProfileData(name: "JH", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
 
-        // Retrieve the saved name and set it in TwitterProfileView
-        if let name = UserDefaults.standard.string(forKey: "ProfileName") {
-            twitterProfileView.profileName.text = name
-            print(twitterProfileView.profileName.text as Any)
-            
-            userData = sideProfileData(name: name, userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
-        }
+        
+        
+         // Retrieve the saved name and set it in TwitterProfileView
+         if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+             twitterProfileView.profileName.text = name
+             print(twitterProfileView.profileName.text as Any)
+             
+             userData = sideProfileData(name: name, userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
+         }
 
+         
+  
         // Add twitterProfileView as a subview
      //   view.addSubview(twitterProfileView)
 
@@ -137,13 +143,16 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         // ...
     
         name.text = userData.name
+        name.numberOfLines = 0
         name.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(name)
         
         NSLayoutConstraint.activate([
-            name.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 200),
-            name.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -690)
+            name.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 120),
+            name.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -6),
+            name.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -656)
         ])
+
         
         userName.text = userData.userName
         userName.translatesAutoresizingMaskIntoConstraints = false
