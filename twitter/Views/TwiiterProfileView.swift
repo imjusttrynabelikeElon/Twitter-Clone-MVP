@@ -40,6 +40,9 @@ protocol TwitterProfileViewDelegate: AnyObject {
 
 
 class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate {
+    
+    var editProfileVMM: editProfileViewModel! // Declare the variable
+      
   
     func didUpdateName(_ name: String) {
           profileName.text = name
@@ -54,18 +57,17 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
   
   
    
-    let editProfileView: EditProfileView
-      
-      override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-          editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
-          super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-      }
-      
-      required init?(coder aDecoder: NSCoder) {
-          editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
-          super.init(coder: aDecoder)
-      }
-      
+    let editProfileVC: editProfileData
+
+     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+         editProfileVC = editProfileData()  // Initialize editProfileVC
+         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+     }
+
+     required init?(coder aDecoder: NSCoder) {
+         editProfileVC = editProfileData()  // Initialize editProfileVC
+         super.init(coder: aDecoder)
+     }
  
 
     
@@ -96,6 +98,9 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     let profileEditButton = UIButton()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
     var editProfileDefaults: editProfile!
+   // let editProfileVC: editProfileData!
+    
+  
     
     
    
@@ -106,10 +111,14 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editProfileView.delegatee = self // Set the delegate for name and bio updates
         
-        
-        editProfileView.delegate = self // Set the delegate for profile image updates
+        let dummyCoder = NSKeyedUnarchiver(forReadingWith: Data())
+          editProfileVMM = editProfileViewModel(coder: dummyCoder) // Initialize editProfileVMM
+          
+            
+            editProfileVMM.delegatee = self // Set the delegate for name and bio updates
+            editProfileVMM.delegate = self // Set the delegate for profile image updates
+            
         
         
         // Retrieve the saved name and bio from UserDefaults
@@ -150,9 +159,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         print(twitterHomeFeedVC.tweets[0].name)
         print(twitterHomeFeedVC.tweets[0].userName)
     }
-
+    
+    
+    
     func configure(with editProfilee: editProfile) {
-        
          twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
          profileImagePic.image = editProfileDefaults.profileImagePic?.image
          profileName.text = editProfilee.Name
@@ -170,6 +180,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         profileFollowersName.text = editProfilee.followersName
         profileFollowingName.text = editProfilee.followingName
         profileEditButton.setTitle("Edit profile", for: .normal)
+        
+        
+        
+        
         
          configureTwitterImageHeaderView()
          configureProfileImagePic()
@@ -237,8 +251,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         ])
     }
     
+    var editProfileDataVM = editProfileData()
+    
     @objc func editProfileButtonTapped() {
-          let editProfileView = EditProfileView(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
+        let editProfileView = editProfileViewModel(profileImage: profileImagePic.image, twitterImageHeaderView: twitterImageHeaderView.image)
           editProfileView.delegate = self
 
           // Set initial values of name and bio from TwitterProfileView

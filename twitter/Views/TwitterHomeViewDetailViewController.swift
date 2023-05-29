@@ -260,7 +260,7 @@ class TwitterHomeViewDetailViewController: UIViewController {
     
                     retweetLabell.sizeToFit()
                 }
-                
+         //
                 retweetLabell.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     retweetLabell.heightAnchor.constraint(equalToConstant: 400),

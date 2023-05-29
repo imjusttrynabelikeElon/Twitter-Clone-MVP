@@ -19,6 +19,10 @@ struct sideProfileData {
 
 
 
+
+
+
+
 class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate, ProfileDataDelegate {
     
     func updateName(_ name: String) {
@@ -35,18 +39,19 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
      let editProfileView: EditProfileView
        
        override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-           editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+           editProfileView = EditProfileView(nibName: nil, bundle: nil)
            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
        }
        
        required init?(coder aDecoder: NSCoder) {
-           editProfileView = EditProfileView(profileImage: nil, twitterImageHeaderView: nil)
+           editProfileView = EditProfileView(nibName: nil, bundle: nil)
            super.init(coder: aDecoder)
        }
        
     
     let twitterProfileView = TwitterProfileView()
     let twitterHomeFeed = twitterHomeFeedTableView()
+    var editProfileVC = editProfileData()
     let secProfileImageForSideView = UIImageView()
     let secprofileImageForSideViewName = UILabel()
     var name = UILabel()
@@ -90,7 +95,7 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editProfileView.delegatee = self
+        editProfileVC.delegatee = self
         
         
         
