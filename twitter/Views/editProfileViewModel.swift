@@ -53,6 +53,7 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         configureTitleLabel()
         configureProfileImagePic()
         configureTwitterProfileImageViewHeader()
+        
         configureNameTextField() // Add this line to
         configureBioTextView() // Add this line to c
      
@@ -76,7 +77,7 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         editProfileDataVM.saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonTapped))
         editProfileDataVM.saveButton?.isEnabled = false // Disable initially
         editProfileDataVM.saveButton?.tintColor = .white
-              navigationItem.rightBarButtonItem = saveButton
+        navigationItem.rightBarButtonItem = editProfileDataVM.saveButton
               
 
     }
