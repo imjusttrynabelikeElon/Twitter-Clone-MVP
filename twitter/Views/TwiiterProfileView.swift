@@ -100,7 +100,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     let twitterHomeFeedVC = twitterHomeFeedTableView()
     var editProfileDefaults: editProfile!
    // let editProfileVC: editProfileData!
-    
+    var currentLineView: UIView? // Declare the currentLineView variable
   
     
     
@@ -112,6 +112,8 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        configureWhiteLine()
         
         let dummyCoder = NSKeyedUnarchiver(forReadingWith: Data())
           editProfileVMM = editProfileViewModel(coder: dummyCoder) // Initialize editProfileVMM
@@ -155,12 +157,23 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         configureSearchButton()
         configureTwitterName()
         configureDateImage()
+        configureWhiteLine() // Call the configureWhiteLine function
       //  configureLinkTextView(with: editProfileDefaults)
         print(twitterHomeFeedVC.tweets[0].name)
         print(twitterHomeFeedVC.tweets[0].userName)
     }
     
     
+    func configureWhiteLine() {
+        // Create a new white line view
+        let whiteLineView = UIView(frame: CGRect(x: 0, y: view.frame.height - 365, width: view.frame.width, height: 1))
+        whiteLineView.backgroundColor = UIColor.gray
+        
+        // Add the line view to the current view
+        view.addSubview(whiteLineView)
+    }
+
+
     
     func configure(with editProfilee: editProfile) {
          twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
@@ -202,7 +215,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
          configureProfileFollowersName()
          configureEditProfileButton()
          configureTabBarController()
-        
+        configureWhiteLine()
         
         // Retrieve the saved name and bio from UserDefaults
         if let name = UserDefaults.standard.string(forKey: "ProfileName") {
@@ -244,7 +257,12 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         )
         
         let tabBarController = UITabBarController()
+       
+             tabBarController.delegate = self // Set the delegate to self
         tabBarController.viewControllers = [tweetsViewController, repliesViewController, likesViewController]
+        
+        // Set the delegate of the tab bar controller to self
+        tabBarController.delegate = self
         
         // Add the tab bar controller as a child view controller
         addChild(tabBarController)
@@ -262,8 +280,6 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         tabBarController.view.layer.zPosition = 100
     }
 
-
-    
     
   
     func configureEditProfileButton() {
@@ -655,4 +671,28 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     }
 
    
+}
+
+extension TwitterProfileView: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        // Remove any existing line views
+        currentLineView?.removeFromSuperview()
+      
+        // Calculate the position and width of the blue line
+        let itemWidth = tabBarController.tabBar.frame.width / CGFloat(tabBarController.viewControllers?.count ?? 6)
+        let lineWidth: CGFloat = 5
+        let lineX = itemWidth * CGFloat(tabBarController.selectedIndex) + (itemWidth - lineWidth) / 2
+        let lineY = tabBarController.tabBar.frame.height - lineWidth
+
+        // Create a new blue line view
+        let lineView = UIView(frame: CGRect(x: lineX, y: lineY + 6, width: lineWidth, height: lineWidth))
+        lineView.backgroundColor = UIColor.systemBlue
+        tabBarController.tabBar.addSubview(lineView)
+     
+    //
+
+        // Keep a reference to the current line views
+        currentLineView = lineView
+      
+    }
 }
