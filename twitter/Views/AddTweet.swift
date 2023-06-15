@@ -8,8 +8,10 @@
 import UIKit
 
 
+
+
 protocol AddTweetDelegate: AnyObject {
-    func didCreateTweet(_ tweet: Tweet)
+    func didAddTweet(_ tweet: Tweet)
 }
 
 
@@ -18,7 +20,7 @@ class AddTweet: UIViewController, UITextFieldDelegate {
     let tweetButton = UIButton()
     let tweetTextField = UITextField()
     weak var delegate: AddTweetDelegate?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -71,15 +73,12 @@ class AddTweet: UIViewController, UITextFieldDelegate {
     }
 
     @objc func tweetButtonTapped() {
-        
-        let HM = twitterHomeFeedTableView()
         let newTweet = Tweet(name: "Your Name", message: tweetTextField.text ?? "", profileImageName: "your_profile_image_name", title: "", userName: "@your_username", comments: "KUOH", numberOfComments: 0, retweet: "KIHUOL", numberOfRetweets: 0, likes: "IKUHU", numberOfLikes: 0, views: "KUHO", numberOfViews: 0, share: "IHLPHI", date: "05/21/23", timePosted: "12:00am", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill")
 
-        delegate?.didCreateTweet(newTweet)
-        HM.tweets.append(newTweet)
-        
+        delegate?.didAddTweet(newTweet)
         dismiss(animated: true)
         print("Tapped")
     }
+
 
 }

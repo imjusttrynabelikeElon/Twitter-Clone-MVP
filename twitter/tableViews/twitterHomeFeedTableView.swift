@@ -24,7 +24,7 @@
   //  }
 //}
 
-struct Tweet {
+struct Tweet: Encodable, Decodable {
     
     var name: String
     let message: String
@@ -254,20 +254,29 @@ class MyTableViewCell: UITableViewCell {
 
 
 
-class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate , AddTweetDelegate {
-    // Implement the AddTweetDelegate method
-       func didCreateTweet(_ tweet: Tweet) {
-           tweets.append(tweet)
-           tableView.reloadData()
-       }
-    
+class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate, AddTweetDelegate {
+   
+
+    func didAddTweet(_ tweet: Tweet) {
+        tweets.append(tweet)
+        tableView.reloadData()
+        
+        // Store the updated tweets array in UserDefaults
+        let encoder = JSONEncoder()
+        if let encodedData = try? encoder.encode(tweets) {
+            UserDefaults.standard.set(encodedData, forKey: "tweets")
+        }
+    }
+
     
     var isProfileImageViewHidden = false
     let profileImageView = UIImageView()
     let twitterLogoImageView = UIImageView(image: UIImage(named: "twitterLogo"))
     let addTweetbutton = UIButton(frame: CGRect(x: 150, y: 130, width: 89, height: 64))
     var addTweetViewController: AddTweet?
-
+    let addTweetButton = UIButton()
+   
+ 
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -280,16 +289,23 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
      
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let twitterProfileView = TwitterProfileView()
         let maxCharacterLimit = 20 // Define your maximum character limit here
 
+     addTweetButtonn()
+    
         
-   
-        addTweetViewController = AddTweet()
-         addTweetViewController?.delegate = self
-        
-        
+       
+        // Retrieve the stored tweets from UserDefaults
+         if let encodedData = UserDefaults.standard.data(forKey: "tweets") {
+             let decoder = JSONDecoder()
+             if let decodedData = try? decoder.decode([Tweet].self, from: encodedData) {
+                 tweets = decodedData
+             }
+         }
+
+            
          // Retrieve the saved name and set it in TwitterProfileView
          if let name = UserDefaults.standard.string(forKey: "ProfileName") {
              twitterProfileView.profileName.text = name
@@ -299,6 +315,9 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
              
              tweets[0].name = name
              
+             
+             
+             
          }
 
          
@@ -307,10 +326,11 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isUserInteractionEnabled = true
+           
         
         
       profileImageViewImage()
-        
+       
         
         profileImageView.isUserInteractionEnabled = true
         
@@ -333,9 +353,34 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     }
     
    
+    @objc func addTweetButtonTapped() {
+        let addTweetViewController = AddTweet()
+        addTweetViewController.delegate = self // Set the delegate to self
+        navigationController?.modalPresentationStyle = .fullScreen
+        navigationController?.modalTransitionStyle = .crossDissolve
+       
+        present(addTweetViewController, animated: true, completion: nil)
+    }
+
     
     
-    
+    func addTweetButtonn() {
+        addTweetbutton.setImage(UIImage(named: "addTweet"), for: .normal)
+        addTweetbutton.layer.zPosition = 233
+        addTweetbutton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addTweetbutton)
+
+        NSLayoutConstraint.activate([
+            addTweetbutton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 143),
+            addTweetbutton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
+            addTweetbutton.widthAnchor.constraint(equalToConstant: 95),
+            addTweetbutton.heightAnchor.constraint(equalToConstant: 77)
+        ])
+
+        addTweetbutton.addTarget(self, action: #selector(addTweetButtonTapped), for: .touchUpInside)
+    }
+
+
     
     
     func profileImageViewImage() {
@@ -405,6 +450,8 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         Tweet(name: "Elon Musk", message: "I love this app can you tell?🤣", profileImageName: "elom", title: "", userName: "@elonMusk", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "12/24/17", timePosted: "7:21pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
         
         Tweet(name: "justin Bieber", message: "will you be my Baby?♥️ come see me on", profileImageName: "jb", title: "", userName: "@justinBieber", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "11/13/22", timePosted: "11:13pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill")
+        
+    
         
     ]
     
@@ -561,6 +608,9 @@ extension twitterHomeFeedTableView: UITabBarControllerDelegate {
 
 
 extension twitterHomeFeedTableView {
+    
+   
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return CustomPresentationAnimator(isPresenting: true)
     }

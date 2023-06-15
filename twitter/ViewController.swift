@@ -14,19 +14,19 @@ class TwitterHomePage: UIViewController {
 
     let tableViewContainer = UIView()
     
-    let addTweetButton = UIButton()
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
-
-     
-      
+        
+        
+        
         
         let tabBarController = CustomTabBarController()
         tabBarController.delegate = self
-
+        
         let forYouTabBarItem = CustomTabBarItem(
             title: "For you",
             image: UIImage(named: "forYouImage"),
@@ -37,46 +37,46 @@ class TwitterHomePage: UIViewController {
             image: UIImage(named: "followingImage"),
             selectedImage: UIImage(named: "followingImageSelected")
         )
-
+        
         
         let homeViewController = UIViewController()
         homeViewController.tabBarItem = forYouTabBarItem
-
+        
         let followingViewController = UIViewController()
         followingViewController.tabBarItem = followingTabBarItem
-
+        
         tabBarController.viewControllers = [homeViewController, followingViewController]
-
+        
         addChild(tabBarController)
-
+        
         view.addSubview(tabBarController.view)
         tabBarController.view.translatesAutoresizingMaskIntoConstraints = false
-      
-    
-//
-      
+        
+        
+        //
+        
         tableViewContainer.translatesAutoresizingMaskIntoConstraints = false
         tableViewContainer.isUserInteractionEnabled = true
         view.addSubview(tableViewContainer)
-
+        
         let twitterHomeFeedViewController = twitterHomeFeedTableView(style: .plain)
         addChild(twitterHomeFeedViewController)
         twitterHomeFeedViewController.view.translatesAutoresizingMaskIntoConstraints = false
         tableViewContainer.addSubview(twitterHomeFeedViewController.view)
-
+        
         NSLayoutConstraint.activate([
             twitterHomeFeedViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             twitterHomeFeedViewController.view.topAnchor.constraint(equalTo: tabBarController.view.bottomAnchor),
             twitterHomeFeedViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             twitterHomeFeedViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
+        
         NSLayoutConstraint.activate([
             tabBarController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tabBarController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tabBarController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tabBarController.view.heightAnchor.constraint(equalToConstant: 23),
-
+            
             tableViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableViewContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -85,38 +85,19 @@ class TwitterHomePage: UIViewController {
         let twitterLogoImageView = UIImageView(image: UIImage(named: "twitterLogo"))
         twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(twitterLogoImageView)
-
+        
         NSLayoutConstraint.activate([
             twitterLogoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             twitterLogoImageView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 97),
             twitterLogoImageView.widthAnchor.constraint(equalToConstant: 59),
             twitterLogoImageView.heightAnchor.constraint(equalToConstant: 34)
         ])
-
-       
-        addTweetButton.setImage(UIImage(named: "addTweet"), for: .normal)
-        addTweetButton.translatesAutoresizingMaskIntoConstraints = false
-       view.addSubview(addTweetButton)
-
-        NSLayoutConstraint.activate([
-            addTweetButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 143),
-            addTweetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
-            addTweetButton.widthAnchor.constraint(equalToConstant: 95),
-            addTweetButton.heightAnchor.constraint(equalToConstant: 77)
-        ])
-        // Add target to the addTweetButton
-          addTweetButton.addTarget(self, action: #selector(addTweetButtonTapped), for: .touchUpInside)
+        
     }
     
    
 
-    @objc func addTweetButtonTapped() {
-        let addTweetViewController = AddTweet()
-        navigationController?.modalPresentationStyle = .fullScreen
-        navigationController?.modalTransitionStyle = .crossDissolve
-       
-        present(addTweetViewController, animated: true, completion: nil)
-    }
+  
 
   
     override func viewWillAppear(_ animated: Bool) {
