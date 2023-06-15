@@ -56,6 +56,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
   
   
   
+  
    
     let editProfileVC: editProfileData
 
@@ -130,8 +131,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
             }
 
             // ...
-        
-        
+
         let twitterSideProfileVC = TwitterProfileSideViewController()
         
         // Create a back button
@@ -201,6 +201,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
          configureProfileFollowers()
          configureProfileFollowersName()
          configureEditProfileButton()
+         configureTabBarController()
         
         
         // Retrieve the saved name and bio from UserDefaults
@@ -220,7 +221,48 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
 
      }
     
-    
+    func configureTabBarController() {
+        let tweetsViewController = UIViewController()
+        tweetsViewController.tabBarItem = UITabBarItem(
+            title: "Tweets",
+            image: UIImage(named: "tweetsImage"),
+            selectedImage: UIImage(named: "tweetsImageSelected")
+        )
+        
+        let repliesViewController = UIViewController()
+        repliesViewController.tabBarItem = UITabBarItem(
+            title: "Replies",
+            image: UIImage(named: "repliesImage"),
+            selectedImage: UIImage(named: "repliesImageSelected")
+        )
+        
+        let likesViewController = UIViewController()
+        likesViewController.tabBarItem = UITabBarItem(
+            title: "Likes",
+            image: UIImage(named: "likesImage"),
+            selectedImage: UIImage(named: "likesImageSelected")
+        )
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [tweetsViewController, repliesViewController, likesViewController]
+        
+        // Add the tab bar controller as a child view controller
+        addChild(tabBarController)
+        view.addSubview(tabBarController.view)
+        tabBarController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tabBarController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 425),
+            tabBarController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tabBarController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tabBarController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -370),
+            tabBarController.tabBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 313)
+        ])
+
+        tabBarController.view.layer.zPosition = 100
+    }
+
+
     
     
   
