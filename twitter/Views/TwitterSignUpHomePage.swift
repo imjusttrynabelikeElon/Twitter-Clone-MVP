@@ -9,7 +9,7 @@
 
 import Foundation
 import UIKit
-
+import FirebaseAuth
 
 
 class TwitterSignUpHomePage: UIViewController {
@@ -57,6 +57,12 @@ class TwitterSignUpHomePage: UIViewController {
         self.present(vc1, animated: true, completion: nil)
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if Auth.auth().currentUser == nil {
+             
+        }
+    }
 
   
 
