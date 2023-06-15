@@ -29,6 +29,7 @@
 		C94EC1002A0862D300DF7C9F /* TwitterHomeViewDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94EC0FF2A0862D300DF7C9F /* TwitterHomeViewDetailViewController.swift */; };
 		C951BB672A11C3F5002FA7A8 /* defaultProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = C951BB662A11C3F5002FA7A8 /* defaultProfile.png */; };
 		C951BB692A12AF16002FA7A8 /* TwitterProfileSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C951BB682A12AF16002FA7A8 /* TwitterProfileSideViewController.swift */; };
+		C9569D862A3ADCF900A99815 /* AddTweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9569D852A3ADCF900A99815 /* AddTweet.swift */; };
 		C9583C662A0092D000073538 /* DirectMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9583C652A0092D000073538 /* DirectMessagesView.swift */; };
 		C9583C682A00968900073538 /* TwitterNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9583C672A00968900073538 /* TwitterNotificationView.swift */; };
 		C9583C6A2A00997600073538 /* TwitterSpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9583C692A00997600073538 /* TwitterSpacesView.swift */; };
@@ -73,6 +74,7 @@
 		C94EC0FF2A0862D300DF7C9F /* TwitterHomeViewDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterHomeViewDetailViewController.swift; sourceTree = "<group>"; };
 		C951BB662A11C3F5002FA7A8 /* defaultProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultProfile.png; sourceTree = "<group>"; };
 		C951BB682A12AF16002FA7A8 /* TwitterProfileSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterProfileSideViewController.swift; sourceTree = "<group>"; };
+		C9569D852A3ADCF900A99815 /* AddTweet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTweet.swift; sourceTree = "<group>"; };
 		C9583C652A0092D000073538 /* DirectMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessagesView.swift; sourceTree = "<group>"; };
 		C9583C672A00968900073538 /* TwitterNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterNotificationView.swift; sourceTree = "<group>"; };
 		C9583C692A00997600073538 /* TwitterSpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSpacesView.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				C9583C692A00997600073538 /* TwitterSpacesView.swift */,
 				C9204A162A010AE400CF214A /* createAccountPage.swift */,
 				C9204A182A01154D00CF214A /* PrivacyAgreementView.swift */,
+				C9569D852A3ADCF900A99815 /* AddTweet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				C9583C682A00968900073538 /* TwitterNotificationView.swift in Sources */,
 				C992F7D82A002FCA004C1BB4 /* TwitterSignUpHomePage.swift in Sources */,
 				C932A88B2A0CFCA400C5E132 /* twitterTabBar.swift in Sources */,
+				C9569D862A3ADCF900A99815 /* AddTweet.swift in Sources */,
 				C92812C12A12B6AF00694E5C /* twitterTabBar.swift in Sources */,
 				C992F7DA2A0054AB004C1BB4 /* TwitterHomePage.swift in Sources */,
 				C9204A192A01154D00CF214A /* PrivacyAgreementView.swift in Sources */,

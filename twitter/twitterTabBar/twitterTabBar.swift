@@ -39,17 +39,13 @@ class TwitterTabBar: UITabBarController {
         let searchVC = TwitterSearchView()
         let notificationsVC = TwitterNotificationView()
         let messagesVC =  DirectMessagesView()
-        let spacesVC = TwitterSpacesView()
-        let createAccountPage = createAccountPage()
         
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
         notificationsVC.tabBarItem = UITabBarItem(title: "Notifications", image: UIImage(systemName: "bell"), tag: 2)
         messagesVC.tabBarItem = UITabBarItem(title: "Messages", image: UIImage(systemName: "envelope"), tag: 3)
-        spacesVC.tabBarItem = UITabBarItem(title: "Spaces", image: UIImage(systemName: "speaker.wave.3"), tag: 4)
-        createAccountPage.tabBarItem = UITabBarItem(title: "Create Account", image: UIImage(systemName: "person.badge.plus"), tag: 5)
         
-        let tabBarList = [homeVC, searchVC, notificationsVC, messagesVC, spacesVC, createAccountPage]
+        let tabBarList = [homeVC, searchVC, notificationsVC, messagesVC]
         viewControllers = tabBarList.map { UINavigationController(rootViewController: $0) }
     }
 

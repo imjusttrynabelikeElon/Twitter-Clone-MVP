@@ -254,12 +254,20 @@ class MyTableViewCell: UITableViewCell {
 
 
 
-class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate {
+class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate , AddTweetDelegate {
+    // Implement the AddTweetDelegate method
+       func didCreateTweet(_ tweet: Tweet) {
+           tweets.append(tweet)
+           tableView.reloadData()
+       }
+    
     
     var isProfileImageViewHidden = false
     let profileImageView = UIImageView()
     let twitterLogoImageView = UIImageView(image: UIImage(named: "twitterLogo"))
     let addTweetbutton = UIButton(frame: CGRect(x: 150, y: 130, width: 89, height: 64))
+    var addTweetViewController: AddTweet?
+
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -278,7 +286,8 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
 
         
    
-
+        addTweetViewController = AddTweet()
+         addTweetViewController?.delegate = self
         
         
          // Retrieve the saved name and set it in TwitterProfileView
@@ -318,7 +327,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         self.tabBarController?.delegate = self
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+     //   twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         addTweetbutton.translatesAutoresizingMaskIntoConstraints = false
         
     }
@@ -412,10 +421,11 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         cell.isUserInteractionEnabled = true
         return cell
         
-        
+    
         
     }
     
+
     
     //https://github.com/imjusttrynabelikeElon/Twitter-clone-with-own-touches
     //
