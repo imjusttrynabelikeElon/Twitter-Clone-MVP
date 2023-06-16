@@ -7,12 +7,13 @@
 
 import Foundation
 import UIKit
-
+import Combine
 
 class createAccountPage: UIViewController {
     
     
     private var viewModel = RegisterViewViewModel()
+    private var subs: Set<AnyCancellable> = []
     
     @IBOutlet weak var Name: UITextField!
     
@@ -25,17 +26,25 @@ class createAccountPage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        nextButton.isEnabled = false
         nextButton.addTarget(self, action: #selector(nextButtonn), for: .touchUpInside)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapToDismiss)))
+        bindViews()
+    }
+    
+    @objc func didTapToDismiss() {
+        view.endEditing(true)
     }
     
     @objc private func didChangeEmail() {
         viewModel.email = email.text
         viewModel.validateRegistrationForm()
     }
+    
     @objc private func didChangePassword() {
         viewModel.password = password.text
         viewModel.validateRegistrationForm()
+        
     }
     @objc private func didChangeName() {
         viewModel.name = Name.text!
@@ -45,16 +54,13 @@ class createAccountPage: UIViewController {
         email.addTarget(self, action: #selector(didChangeEmail), for: .editingChanged)
         password.addTarget(self, action: #selector(didChangePassword), for: .editingChanged)
         Name.addTarget(self, action: #selector(didChangeName), for: .editingChanged)
+        viewModel.$isRegistrationFormValid.sink { [weak self] validationState in
+            self?.nextButton.isEnabled = validationState
+        }
+        .store(in: &subs)
     }
-    
     @objc func nextButtonn() {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      
-        let vc2 = storyboard.instantiateViewController(withIdentifier: "tabBar")
-        vc2.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
-        nextButton.isEnabled = false
-        self.present(vc2, animated: true, completion: nil)
-        
+       
     }
+
 }

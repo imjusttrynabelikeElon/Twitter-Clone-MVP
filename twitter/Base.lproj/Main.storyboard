@@ -236,7 +236,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-62" y="-73"/>
+            <point key="canvasLocation" x="-53" y="-73"/>
         </scene>
         <!--Privacy Agrrement View-->
         <scene sceneID="MAd-1r-DYx">
@@ -425,7 +425,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="SMt-r6-1ri"/>
                     <connections>
+                        <outlet property="email" destination="VOk-bg-W8h" id="LmR-u2-jOD"/>
                         <outlet property="nextButton" destination="rXk-f1-t5j" id="fQ5-bG-GPL"/>
+                        <outlet property="password" destination="YNa-Es-cFF" id="jQB-Ke-8v9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q7T-Ut-eOX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

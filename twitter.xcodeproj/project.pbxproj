@@ -37,6 +37,7 @@
 		C95BD3962A22EFD600819780 /* editProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95BD3952A22EFD600819780 /* editProfileModel.swift */; };
 		C95BD3982A230EDE00819780 /* editProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95BD3972A230EDE00819780 /* editProfileViewModel.swift */; };
 		C95D5FBD2A0F79A50049E1E0 /* twitterLaunch.png in Resources */ = {isa = PBXBuildFile; fileRef = C95D5FBC2A0F79A50049E1E0 /* twitterLaunch.png */; };
+		C98AF03D2A3BE77A004D9F88 /* loginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98AF03C2A3BE77A004D9F88 /* loginViewModel.swift */; };
 		C992F7BA29FF28A1004C1BB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F7B929FF28A1004C1BB4 /* AppDelegate.swift */; };
 		C992F7BC29FF28A1004C1BB4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F7BB29FF28A1004C1BB4 /* SceneDelegate.swift */; };
 		C992F7BE29FF28A1004C1BB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F7BD29FF28A1004C1BB4 /* ViewController.swift */; };
@@ -93,6 +94,7 @@
 		C95BD3952A22EFD600819780 /* editProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editProfileModel.swift; sourceTree = "<group>"; };
 		C95BD3972A230EDE00819780 /* editProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editProfileViewModel.swift; sourceTree = "<group>"; };
 		C95D5FBC2A0F79A50049E1E0 /* twitterLaunch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitterLaunch.png; sourceTree = "<group>"; };
+		C98AF03C2A3BE77A004D9F88 /* loginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViewModel.swift; sourceTree = "<group>"; };
 		C992F7B629FF28A1004C1BB4 /* twitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twitter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C992F7B929FF28A1004C1BB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C992F7BB29FF28A1004C1BB4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				C992F7D72A002FCA004C1BB4 /* TwitterSignUpHomePage.swift */,
+				C98AF03C2A3BE77A004D9F88 /* loginViewModel.swift */,
 				C951BB682A12AF16002FA7A8 /* TwitterProfileSideViewController.swift */,
 				C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */,
 				C93FFB722A1DA86D00A0AF11 /* editProfileView.swift */,
@@ -360,6 +363,7 @@
 				C992F7BE29FF28A1004C1BB4 /* ViewController.swift in Sources */,
 				C9204A1C2A0194A800CF214A /* CustomTabBar.swift in Sources */,
 				C93FFB732A1DA86D00A0AF11 /* editProfileView.swift in Sources */,
+				C98AF03D2A3BE77A004D9F88 /* loginViewModel.swift in Sources */,
 				C9583C6A2A00997600073538 /* TwitterSpacesView.swift in Sources */,
 				C992F7BA29FF28A1004C1BB4 /* AppDelegate.swift in Sources */,
 				C95BD3982A230EDE00819780 /* editProfileViewModel.swift in Sources */,
