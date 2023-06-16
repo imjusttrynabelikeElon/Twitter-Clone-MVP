@@ -43,11 +43,12 @@ final class RegisterViewViewModel: ObservableObject {
     
     func createUser() {
         guard let email = email,
+              let name = name,
               let password = password else {
             return
         }
         
-        AuthManager.shared.regUser(with: email, password: password)
+        AuthManager.shared.regUser(with: name, email: email, password: password)
             .sink { _ in
                 
             } receiveValue: { [weak self] user in

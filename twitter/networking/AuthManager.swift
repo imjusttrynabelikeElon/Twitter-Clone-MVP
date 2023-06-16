@@ -14,9 +14,24 @@ import Combine
 class AuthManager {
     static let shared = AuthManager()
     
-    func regUser(with email: String, password: String) -> AnyPublisher<User, Error> {
-      return Auth.auth().createUser(withEmail: email, password: password)
-            .map(\.user)
-            .eraseToAnyPublisher()
+    func regUser(with name: String, email: String, password: String) -> AnyPublisher<User, Error> {
+        return Future<User, Error> { promise in
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else if let user = authResult?.user {
+                    let changeRequest = user.createProfileChangeRequest()
+                    changeRequest.displayName = name
+                    changeRequest.commitChanges { error in
+                        if let error = error {
+                            promise(.failure(error))
+                        } else {
+                            promise(.success(user))
+                        }
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }
