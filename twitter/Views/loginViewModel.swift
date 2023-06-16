@@ -21,8 +21,8 @@ final class logininViewModel: ObservableObject {
             isRegistrationFormValid = false
             return
         }
-        // Add your validation logic here
-        isRegistrationFormValid = isValidEmail(email) && password.count >= 8
+        let isEmailValid = isValidEmail(email) && email.hasSuffix(".com")
+        isRegistrationFormValid = isEmailValid && password.count >= 8 
     }
     
     func isValidEmail(_ email: String) -> Bool {

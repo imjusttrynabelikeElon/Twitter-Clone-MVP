@@ -114,6 +114,7 @@ class TwitterSignUpHomePage: UIViewController {
            
         }
         .store(in: &subs)
+        
     }
 
 }

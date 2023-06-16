@@ -22,6 +22,7 @@
 		C94187AB2A188CC600E4C3C3 /* TwiiterProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */; };
 		C94187AD2A18989C00E4C3C3 /* kbb.png in Resources */ = {isa = PBXBuildFile; fileRef = C94187AC2A18989C00E4C3C3 /* kbb.png */; };
 		C94187AF2A18A64B00E4C3C3 /* KB.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C94187AE2A18A64B00E4C3C3 /* KB.jpg */; };
+		C94A3E3E2A3C051400B64E94 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A3E3D2A3C051400B64E94 /* AuthManager.swift */; };
 		C94B816A2A14528200BE14C7 /* twitterBlue.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = C94B81692A14528200BE14C7 /* twitterBlue.jpeg */; };
 		C94B85E22A05791400DB0476 /* nba.png in Resources */ = {isa = PBXBuildFile; fileRef = C94B85E12A05791400DB0476 /* nba.png */; };
 		C94B85E62A05798800DB0476 /* google.png in Resources */ = {isa = PBXBuildFile; fileRef = C94B85E52A05798700DB0476 /* google.png */; };
@@ -79,6 +80,7 @@
 		C94187AA2A188CC600E4C3C3 /* TwiiterProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwiiterProfileView.swift; sourceTree = "<group>"; };
 		C94187AC2A18989C00E4C3C3 /* kbb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kbb.png; sourceTree = "<group>"; };
 		C94187AE2A18A64B00E4C3C3 /* KB.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = KB.jpg; sourceTree = "<group>"; };
+		C94A3E3D2A3C051400B64E94 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		C94B81692A14528200BE14C7 /* twitterBlue.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = twitterBlue.jpeg; sourceTree = "<group>"; };
 		C94B85E12A05791400DB0476 /* nba.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nba.png; sourceTree = "<group>"; };
 		C94B85E52A05798700DB0476 /* google.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = google.png; path = ../../../google.png; sourceTree = "<group>"; };
@@ -151,6 +153,14 @@
 			path = extenisons;
 			sourceTree = "<group>";
 		};
+		C94A3E3C2A3C04F700B64E94 /* networking */ = {
+			isa = PBXGroup;
+			children = (
+				C94A3E3D2A3C051400B64E94 /* AuthManager.swift */,
+			);
+			path = networking;
+			sourceTree = "<group>";
+		};
 		C95BD3932A22ECC800819780 /* viewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +204,7 @@
 		C992F7B829FF28A1004C1BB4 /* twitter */ = {
 			isa = PBXGroup;
 			children = (
+				C94A3E3C2A3C04F700B64E94 /* networking */,
 				C972DD412A036C14000B52E8 /* tableViews */,
 				C9204A1A2A01949000CF214A /* CustomItems */,
 				C9F4077C2A0066D500EAD1F1 /* twitterTabBar */,
@@ -375,6 +386,7 @@
 				C9583C682A00968900073538 /* TwitterNotificationView.swift in Sources */,
 				C992F7D82A002FCA004C1BB4 /* TwitterSignUpHomePage.swift in Sources */,
 				C932A88B2A0CFCA400C5E132 /* twitterTabBar.swift in Sources */,
+				C94A3E3E2A3C051400B64E94 /* AuthManager.swift in Sources */,
 				C94E4E262A3BB923009BE90E /* RegisterViewViewModel.swift in Sources */,
 				C9569D862A3ADCF900A99815 /* AddTweet.swift in Sources */,
 				C92812C12A12B6AF00694E5C /* twitterTabBar.swift in Sources */,

@@ -51,6 +51,33 @@ class createAccountPage: UIViewController {
         viewModel.validateRegistrationForm()
     }
     private func bindViews() {
+        
+       
+            if let email = email {
+                email.addTarget(self, action: #selector(didChangeEmail), for: .editingChanged)
+            } else {
+                print("email is nil")
+            }
+         
+            if let password = password {
+                password.addTarget(self, action: #selector(didChangePassword), for: .editingChanged)
+            } else {
+                print("password is nil")
+            }
+           
+           
+            viewModel.$isRegistrationFormValid.sink { [weak self] validationState in
+                
+                if let nextButton = self!.nextButton {
+                    self?.nextButton.isEnabled = validationState
+                } else {
+                    print("button is nil")
+                }
+               
+            }
+            .store(in: &subs)
+            
+        
         email.addTarget(self, action: #selector(didChangeEmail), for: .editingChanged)
         password.addTarget(self, action: #selector(didChangePassword), for: .editingChanged)
         Name.addTarget(self, action: #selector(didChangeName), for: .editingChanged)
@@ -58,9 +85,25 @@ class createAccountPage: UIViewController {
             self?.nextButton.isEnabled = validationState
         }
         .store(in: &subs)
+        
+        viewModel.$user.sink { [weak self] user in
+            print(user)
+        }
+        .store(in: &subs)
     }
     @objc func nextButtonn() {
+        
+        viewModel.createUser()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      
+        let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
+        vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
+        self.present(vc1, animated: true, completion: nil)
+        
        
+        
+        print("Next hit")
     }
 
 }
