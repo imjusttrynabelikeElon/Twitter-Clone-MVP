@@ -46,6 +46,7 @@ import Firebase
         AuthManager.shared.loginUser(email: email, password: password)
             .sink { [weak self] comp in
                 
+                
                 if case .failure(let error) = comp {
                     self?.error = error.localizedDescription
                     print("IUGIUGIUI")

@@ -66,11 +66,6 @@ class TwitterSignUpHomePage: UIViewController {
         
         viewModel.loginUser()
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      
-        let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
-        vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
-      //  self.present(vc1, animated: true, completion: nil)
     }
     
     
@@ -112,6 +107,7 @@ class TwitterSignUpHomePage: UIViewController {
        
         viewModel.$isRegistrationFormValid.sink { [weak self] validationState in
         
+            
             if self!.nextButton != nil {
                 self?.nextButton.isEnabled = validationState
             } else {
@@ -121,7 +117,19 @@ class TwitterSignUpHomePage: UIViewController {
         }
         .store(in: &subs)
         
-   
+        
+        
+        viewModel.$user.sink { [weak self] user in
+            guard user != nil else { return }
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+          
+            let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
+            vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
+            self!.present(vc1, animated: true, completion: nil)
+        }
+        .store(in: &subs)
+        
+     
         viewModel.$error
             .receive(on: DispatchQueue.main)
             .sink { [weak self] errorString in

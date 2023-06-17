@@ -57,6 +57,9 @@ final class RegisterViewViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] user in
                 self?.user = user
+                
+                
+            
             }
             .store(in: &sub)
 
