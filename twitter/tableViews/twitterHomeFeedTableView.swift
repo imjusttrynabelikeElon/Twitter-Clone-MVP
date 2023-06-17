@@ -7,7 +7,7 @@
 //
  import Foundation
  import UIKit
-
+ import Firebase
 
 //class LinkTweet {
     
@@ -275,83 +275,89 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     let addTweetbutton = UIButton(frame: CGRect(x: 150, y: 130, width: 89, height: 64))
     var addTweetViewController: AddTweet?
     let addTweetButton = UIButton()
-   
+    var signOutButton = UIButton(type: .system)
  
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-
+    //   handleAuth()
             // Toggle profileImageView back on
             profileImageView.isHidden = isProfileImageViewHidden
+        
+      //  handleAuth()
+        
         }
 
     
-     
+    
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+            super.viewDidLoad()
 
-        let twitterProfileView = TwitterProfileView()
-        let maxCharacterLimit = 20 // Define your maximum character limit here
-
-     addTweetButtonn()
-    
-        
-       
-        // Retrieve the stored tweets from UserDefaults
-         if let encodedData = UserDefaults.standard.data(forKey: "tweets") {
-             let decoder = JSONDecoder()
-             if let decodedData = try? decoder.decode([Tweet].self, from: encodedData) {
-                 tweets = decodedData
-             }
-         }
-
+            let twitterProfileView = TwitterProfileView()
+            let maxCharacterLimit = 20 // Define your maximum character limit here
             
-         // Retrieve the saved name and set it in TwitterProfileView
-         if let name = UserDefaults.standard.string(forKey: "ProfileName") {
-             twitterProfileView.profileName.text = name
-             
-             print(twitterProfileView.profileName.text as Any)
-             
-             
-             tweets[0].name = name
-             
-             
-             
-             
-         }
+            
 
-         
-       // performSegue(withIdentifier: "tweetCell", sender: self)
+         addTweetButtonn()
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isUserInteractionEnabled = true
+            
            
+            // Retrieve the stored tweets from UserDefaults
+             if let encodedData = UserDefaults.standard.data(forKey: "tweets") {
+                 let decoder = JSONDecoder()
+                 if let decodedData = try? decoder.decode([Tweet].self, from: encodedData) {
+                     tweets = decodedData
+                 }
+             }
+
+                
+             // Retrieve the saved name and set it in TwitterProfileView
+             if let name = UserDefaults.standard.string(forKey: "ProfileName") {
+                 twitterProfileView.profileName.text = name
+                 
+                 print(twitterProfileView.profileName.text as Any)
+                 
+                 
+                 tweets[0].name = name
+                 
+                 
+                 
+                 
+             }
+
+             
+           // performSegue(withIdentifier: "tweetCell", sender: self)
+            
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.isUserInteractionEnabled = true
+               
+            
+            
+          profileImageViewImage()
+          configureSignOutButton()
+            
+            profileImageView.isUserInteractionEnabled = true
+            
+            let tapGuestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            
+            profileImageView.addGestureRecognizer(tapGuestureRecognizer)
+            
+            tabBarController?.delegate = self
+            
+            tableView.register(MyTableViewCell.self, forCellReuseIdentifier: "tweetCell")
+            
+            
+            // Set the delegate of the UITabBarController to self
+            self.tabBarController?.delegate = self
+            
+            tableView.translatesAutoresizingMaskIntoConstraints = false
+         //   twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+            addTweetbutton.translatesAutoresizingMaskIntoConstraints = false
+            
+        }
         
-        
-      profileImageViewImage()
-       
-        
-        profileImageView.isUserInteractionEnabled = true
-        
-        let tapGuestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        
-        profileImageView.addGestureRecognizer(tapGuestureRecognizer)
-        
-        tabBarController?.delegate = self
-        
-        tableView.register(MyTableViewCell.self, forCellReuseIdentifier: "tweetCell")
-        
-        
-        // Set the delegate of the UITabBarController to self
-        self.tabBarController?.delegate = self
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-     //   twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
-        addTweetbutton.translatesAutoresizingMaskIntoConstraints = false
-        
-    }
-    
    
     @objc func addTweetButtonTapped() {
         let addTweetViewController = AddTweet()
@@ -362,7 +368,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         present(addTweetViewController, animated: true, completion: nil)
     }
 
-    
+
     
     func addTweetButtonn() {
         addTweetbutton.setImage(UIImage(named: "addTweet"), for: .normal)
@@ -381,7 +387,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     }
 
 
-    
+
     
     func profileImageViewImage() {
      //    profileImageView.image = UIImage(named: "defaultProfile")
@@ -409,6 +415,49 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     }
 
     
+    func configureSignOutButton() {
+        signOutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right"), for: .normal)
+           signOutButton.translatesAutoresizingMaskIntoConstraints = false
+           
+           // Access the tab bar controller's view instead of the current view
+           guard let tabBarController = self.tabBarController else { return }
+           tabBarController.view.addSubview(signOutButton)
+           
+           NSLayoutConstraint.activate([
+               signOutButton.trailingAnchor.constraint(equalTo: tabBarController.view.trailingAnchor, constant: -16),
+               signOutButton.topAnchor.constraint(equalTo: tabBarController.view.topAnchor, constant: 48),
+               signOutButton.widthAnchor.constraint(equalToConstant: 30),
+               signOutButton.heightAnchor.constraint(equalToConstant: 30)
+           ])
+           
+           signOutButton.addTarget(self, action: #selector(didTapSignOut), for: .touchUpInside)
+    }
+
+
+
+
+    @objc func didTapSignOut() {
+      try? Auth.auth().signOut()
+        handleAuth()
+    }
+    
+    
+    func handleAuth() {
+        if Auth.auth().currentUser == nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let navController = storyboard.instantiateViewController(withIdentifier: "nav") as? UINavigationController,
+               let twitterSignUpHomePage = storyboard.instantiateViewController(withIdentifier: "signup") as? TwitterSignUpHomePage {
+                navController.setViewControllers([twitterSignUpHomePage], animated: true)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: false)
+            }
+        }
+    }
+
+
+
+
+
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: profileImageView)
         if profileImageView.bounds.contains(tapLocation) {
@@ -522,7 +571,6 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         let likeImage = UIImage(systemName: likeName)
         
         vc.likeImagee = likeImage
-        
         
         let shareName = tweets[indexPath.row].shareImagee
         

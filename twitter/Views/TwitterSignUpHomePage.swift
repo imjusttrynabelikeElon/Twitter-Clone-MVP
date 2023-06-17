@@ -12,6 +12,8 @@ import UIKit
 import FirebaseAuth
 import Combine
 
+
+
 class TwitterSignUpHomePage: UIViewController {
     
     private var viewModel = logininViewModel()
@@ -61,16 +63,20 @@ class TwitterSignUpHomePage: UIViewController {
     
     
     @objc func nextButtonTapped() {
+        
+        viewModel.loginUser()
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
       
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
         vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
-        self.present(vc1, animated: true, completion: nil)
+      //  self.present(vc1, animated: true, completion: nil)
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         if Auth.auth().currentUser == nil {
+            
              
         }
     }
@@ -105,8 +111,8 @@ class TwitterSignUpHomePage: UIViewController {
        
        
         viewModel.$isRegistrationFormValid.sink { [weak self] validationState in
-            
-            if let nextButton = self!.nextButton {
+        
+            if self!.nextButton != nil {
                 self?.nextButton.isEnabled = validationState
             } else {
                 print("button is nil")
@@ -115,7 +121,25 @@ class TwitterSignUpHomePage: UIViewController {
         }
         .store(in: &subs)
         
+   
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorString in
+                if let error = errorString {
+                    self?.presentAlert(with: error)
+                } else {
+                    print("Error string is nil")
+                }
+            }
+            .store(in: &subs)
+
     }
 
+    private func presentAlert(with error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        let okayButton = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(okayButton)
+        present(alert, animated: true)
+    }
 }
 

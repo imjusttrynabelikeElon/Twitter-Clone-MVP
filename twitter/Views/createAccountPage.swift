@@ -52,32 +52,6 @@ class createAccountPage: UIViewController {
     }
     private func bindViews() {
         
-       
-            if let email = email {
-                email.addTarget(self, action: #selector(didChangeEmail), for: .editingChanged)
-            } else {
-                print("email is nil")
-            }
-         
-            if let password = password {
-                password.addTarget(self, action: #selector(didChangePassword), for: .editingChanged)
-            } else {
-                print("password is nil")
-            }
-           
-           
-            viewModel.$isRegistrationFormValid.sink { [weak self] validationState in
-                
-                if let nextButton = self!.nextButton {
-                    self?.nextButton.isEnabled = validationState
-                } else {
-                    print("button is nil")
-                }
-               
-            }
-            .store(in: &subs)
-            
-        
         email.addTarget(self, action: #selector(didChangeEmail), for: .editingChanged)
         password.addTarget(self, action: #selector(didChangePassword), for: .editingChanged)
         Name.addTarget(self, action: #selector(didChangeName), for: .editingChanged)
@@ -87,11 +61,40 @@ class createAccountPage: UIViewController {
         .store(in: &subs)
         
         viewModel.$user.sink { [weak self] user in
-            print(user)
+            
+            guard user != nil else { return }
+                guard let vc = self?.navigationController?.viewControllers.first as? TwitterSignUpHomePage else { return }
+                vc.dismiss(animated: true)
+            
+            print("w")
+            print(user ?? "G")
+            print(user?.displayName as Any)
+            print(user?.email as Any)
+            print(self!.Name.text as Any)
         }
         .store(in: &subs)
+        
+        viewModel.$error.sink { [weak self] errorString in
+            guard let error = errorString else {return}
+            self?.presentAlert(with: error)
+        }
+
+            .store(in: &subs)
+        
     }
+    
+    
+    private func presentAlert(with error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        let okayButton = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(okayButton)
+        present(alert, animated: true)
+    }
+    
+    
+    
     @objc func nextButtonn() {
+        
         
         viewModel.createUser()
         
@@ -99,7 +102,7 @@ class createAccountPage: UIViewController {
       
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
         vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
-        self.present(vc1, animated: true, completion: nil)
+    //    self.present(vc1, animated: false, completion: nil)
         
        
         

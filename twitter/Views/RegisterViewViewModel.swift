@@ -17,7 +17,7 @@ final class RegisterViewViewModel: ObservableObject {
     @Published var password: String?
     @Published var isRegistrationFormValid: Bool = false
     @Published var user: User?
-
+    @Published var error: String?
     
     private var sub: Set<AnyCancellable> = []
 
@@ -49,12 +49,20 @@ final class RegisterViewViewModel: ObservableObject {
         }
         
         AuthManager.shared.regUser(with: name, email: email, password: password)
-            .sink { _ in
-                
+            .sink { [weak self] comp in
+
+                if case .failure(let error) = comp {
+                    self?.error = error.localizedDescription
+                     
+                }
             } receiveValue: { [weak self] user in
                 self?.user = user
             }
             .store(in: &sub)
 
     }
+    
+    
+ 
+
 }

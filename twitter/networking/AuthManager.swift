@@ -12,6 +12,7 @@ import Combine
 
 
 class AuthManager {
+    
     static let shared = AuthManager()
     
     func regUser(with name: String, email: String, password: String) -> AnyPublisher<User, Error> {
@@ -34,4 +35,24 @@ class AuthManager {
         }
         .eraseToAnyPublisher()
     }
+    
+    func loginUser(email: String, password: String) -> AnyPublisher<User, Error> {
+        return Future<User, Error> { promise in
+            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("KEEE")
+                } else if let user = authResult?.user {
+                    promise(.success(user))
+                    print("IJYGVIGUVIU")
+                } else {
+                    promise(.failure(NSError(domain: "LoginError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])))
+                    print("IYUGVJUFYV")
+                    
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
 }
