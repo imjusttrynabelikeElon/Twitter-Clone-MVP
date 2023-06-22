@@ -27,6 +27,12 @@ class createAccountPage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let userName = UserDefaults.standard.string(forKey: "userName") {
+            // Use the saved userName
+            Name.text = userName
+        }
+
+        
         nextButton.isEnabled = false
         nextButton.addTarget(self, action: #selector(nextButtonn), for: .touchUpInside)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapToDismiss)))
@@ -101,6 +107,12 @@ class createAccountPage: UIViewController {
     
 
     @objc func nextButtonn() {
+        guard let name = Name.text else {
+            return
+        }
+        
+        // Save the name to UserDefaults
+        UserDefaults.standard.set(name, forKey: "userName")
         
         nextButton.isEnabled = false // Disable the button
         
@@ -112,6 +124,7 @@ class createAccountPage: UIViewController {
         
         print("Next hit")
     }
+
 
 
 }

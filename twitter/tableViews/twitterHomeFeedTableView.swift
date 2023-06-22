@@ -254,8 +254,28 @@ class MyTableViewCell: UITableViewCell {
 
 
 
-class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate, AddTweetDelegate {
+class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate, AddTweetDelegate, ProfilePickerDelegate {
    
+    func profilePickerDidFinish(with user: Userr) {
+        currentUser = user
+        
+        // Update the stored profile image in UserDefaults
+        if let imageData = user.profilePic!.pngData() {
+            UserDefaults.standard.set(imageData, forKey: "profileImage")
+        }
+        
+        // Check if currentUser's profilePic property is not nil
+        if let profilePic = user.profilePic {
+            profileImageViewImage(profilePic: profilePic)
+        } else {
+            // Use a default profile image or handle the case when profilePic is nil
+            profileImageViewImage(profilePic: UIImage(named: "defaultProfile")!)
+        }
+        
+        // Perform any other necessary actions after selecting the profile image
+    }
+
+
 
     func didAddTweet(_ tweet: Tweet) {
         tweets.append(tweet)
@@ -268,7 +288,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         }
     }
 
-    
+    var currentUser: Userr?
     var isProfileImageViewHidden = false
     let profileImageView = UIImageView()
     let twitterLogoImageView = UIImageView(image: UIImage(named: "twitterLogo"))
@@ -301,7 +321,19 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
 
          addTweetButtonn()
         
-            
+        // Retrieve the profile image data from UserDefaults
+          if let imageData = UserDefaults.standard.data(forKey: "profileImage") {
+              if let profileImage = UIImage(data: imageData) {
+                  profileImageViewImage(profilePic: profileImage)
+              } else {
+                  // Use a default profile image or handle the case when the image data is invalid
+                  profileImageViewImage(profilePic: UIImage(named: "defaultProfile")!)
+              }
+          } else {
+              // Use a default profile image or handle the case when the image data is not found
+              profileImageViewImage(profilePic: UIImage(named: "defaultProfile")!)
+          }
+
            
             // Retrieve the stored tweets from UserDefaults
              if let encodedData = UserDefaults.standard.data(forKey: "tweets") {
@@ -322,7 +354,10 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
                  tweets[0].name = name
                  
                  
-                 
+                 // Retrieve the profile image from the current user and set it in the profileImageView
+                 let currentUser = Userr(name: "John Doe", userNaame: "johndoe", bio: "Hello, world!", profilePic: UIImage(named: "profileImage")!)
+                 profileImageViewImage(profilePic: currentUser.profilePic!)
+
                  
              }
 
@@ -333,9 +368,8 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
             tableView.dataSource = self
             tableView.isUserInteractionEnabled = true
                
-            
-            
-          profileImageViewImage()
+   
+
           configureSignOutButton()
             
             profileImageView.isUserInteractionEnabled = true
@@ -389,9 +423,9 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
 
 
     
-    func profileImageViewImage() {
+    func profileImageViewImage(profilePic: UIImage) {
      //    profileImageView.image = UIImage(named: "defaultProfile")
-       profileImageView.image = UIImage(named: "kb")
+        profileImageView.image = profilePic
 
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         

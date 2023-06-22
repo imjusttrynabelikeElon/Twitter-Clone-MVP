@@ -7,13 +7,24 @@
 
 import UIKit
 
-class UserNameAndBio: UIViewController {
+class UserNameAndBio: UIViewController, ProfilePickerDelegate {
+    func profilePickerDidFinish(with user: Userr) {
+        // Use the user object to perform further actions or save the data
+               // For example:
+        createAccountVC.Name.text = user.name
+        userNameTextField.text = user.userNaame
+        bioTextField.text = user.bio
+        profilePicVC.profilePickerImage.image = user.profilePic
+    }
+    
     
     @IBOutlet weak var nextButton: UIButton!
     
     let twitterLogoImage = UIImageView()
     let userNameTextField = UITextField()
     let bioTextField = UITextField()
+    let profilePicVC = ProfilePicker()
+    let createAccountVC = createAccountPage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +35,11 @@ class UserNameAndBio: UIViewController {
         updateNextButtonState()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+          if let profilePicker = segue.destination as? ProfilePicker {
+              profilePicker.delegate = self
+          }
+      }
     
     func configureTwitterLogoImage() {
         // Configure the Twitter logo image
@@ -93,11 +109,21 @@ class UserNameAndBio: UIViewController {
     }
     
     @objc func nextButtonTapped() {
+        guard let username = userNameTextField.text,
+              let bio = bioTextField.text else {
+            return
+        }
+        
+        // Save the username and bio to UserDefaults
+        UserDefaults.standard.set(username, forKey: "username")
+        UserDefaults.standard.set(bio, forKey: "bio")
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
         vc1.modalPresentationStyle = .fullScreen
         present(vc1, animated: true)
     }
+
     
     @objc func userNameTextFieldDidChange(_ textField: UITextField) {
         updateNextButtonState()

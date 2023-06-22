@@ -9,12 +9,17 @@
 
 import UIKit
 
+protocol ProfilePickerDelegate: AnyObject {
+    func profilePickerDidFinish(with user: Userr)
+}
+
 class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var twitterLogoImage: UIImageView!
     @IBOutlet weak var pickAProfilePic: UILabel!
     @IBOutlet weak var haveAFavDressLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
+    weak var delegate: ProfilePickerDelegate?
     
     let profilePickerImage = UIImageView()
     let plusSignImage = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
@@ -115,12 +120,29 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @objc func nextButtonTapped() {
+        let profileImage: UIImage
+           if let image = profilePickerImage.image {
+               profileImage = image.fixOrientation() // Apply orientation correction
+           } else {
+               profileImage = UIImage(named: "defaultProfile")!
+           }
+        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage)
+
+        
+             delegate?.profilePickerDidFinish(with: user)
+        // Convert the profile image to Data
+        if let imageData = profileImage.pngData() {
+            // Save the profile image data to UserDefaults
+            UserDefaults.standard.set(imageData, forKey: "profileImage")
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc1 = storyboard.instantiateViewController(withIdentifier: "navvv2")
         vc1.modalPresentationStyle = .fullScreen
         
         present(vc1, animated: true, completion: nil)
     }
+
 
 
     
@@ -138,5 +160,25 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+
+extension UIImage {
+    func fixOrientation() -> UIImage {
+        if self.imageOrientation == .up {
+            return self
+        }
+
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        self.draw(in: CGRect(origin: .zero, size: self.size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        if let image = normalizedImage {
+            return image
+        } else {
+            return self
+        }
     }
 }
