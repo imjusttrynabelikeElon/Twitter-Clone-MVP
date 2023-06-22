@@ -13,6 +13,7 @@ class createAccountPage: UIViewController {
     
     
     private var viewModel = RegisterViewViewModel()
+    
     private var subs: Set<AnyCancellable> = []
     
     @IBOutlet weak var Name: UITextField!
@@ -80,14 +81,15 @@ class createAccountPage: UIViewController {
         .store(in: &subs)
         
         viewModel.$error.sink { [weak self] errorString in
-            guard let error = errorString else {return}
-            self?.presentAlert(with: error)
+            if let error = errorString {
+                self?.presentAlert(with: error)
+                self?.nextButton.isEnabled = true // Enable the button if there's an error
+            }
         }
+        .store(in: &subs)
 
-            .store(in: &subs)
         
     }
-    
     
     private func presentAlert(with error: String) {
         let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
@@ -97,21 +99,19 @@ class createAccountPage: UIViewController {
     }
     
     
-    
+
     @objc func nextButtonn() {
         
+        nextButton.isEnabled = false // Disable the button
         
         viewModel.createUser()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
-        vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
-    //    self.present(vc1, animated: false, completion: nil)
-        
-       
+        vc1.modalPresentationStyle = .fullScreen
         
         print("Next hit")
     }
+
 
 }

@@ -121,6 +121,7 @@ class TwitterSignUpHomePage: UIViewController {
         
         viewModel.$user.sink { [weak self] user in
             guard user != nil else { return }
+            self!.nextButton.isEnabled = false
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
           
             let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")

@@ -13,7 +13,6 @@ class TwitterHomePage: UIViewController {
     var currentLineView: UIView?
 
     let tableViewContainer = UIView()
-    
   
     
     override func viewDidLoad() {
