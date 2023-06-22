@@ -68,7 +68,7 @@ class createAccountPage: UIViewController {
             guard user != nil else { return }
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
           
-            let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
+            let vc1 = storyboard.instantiateViewController(withIdentifier: "navv")
             vc1.modalPresentationStyle = .fullScreen // set the modalPresentationStyle
             self!.present(vc1, animated: true, completion: nil)
             
@@ -107,7 +107,7 @@ class createAccountPage: UIViewController {
         viewModel.createUser()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
+        let vc1 = storyboard.instantiateViewController(withIdentifier: "navv")
         vc1.modalPresentationStyle = .fullScreen
         
         print("Next hit")

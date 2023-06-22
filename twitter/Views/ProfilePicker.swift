@@ -99,7 +99,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
     func configureNextButton() {
         // Configure the next button
         nextButton.translatesAutoresizingMaskIntoConstraints = false
-        
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
      
         nextButton.isEnabled = false // Disable the button initially
         
@@ -113,6 +113,16 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             nextButton.heightAnchor.constraint(equalToConstant: 47)
         ])
     }
+    
+    @objc func nextButtonTapped() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc1 = storyboard.instantiateViewController(withIdentifier: "navvv2")
+        vc1.modalPresentationStyle = .fullScreen
+        
+        present(vc1, animated: true, completion: nil)
+    }
+
+
     
     // UIImagePickerControllerDelegate methods
     

@@ -5,7 +5,6 @@
 //  Created by Karon Bell on 6/22/23.
 //
 
-
 import UIKit
 
 class UserNameAndBio: UIViewController {
@@ -24,6 +23,7 @@ class UserNameAndBio: UIViewController {
         configureBioTextField()
         updateNextButtonState()
     }
+    
     
     func configureTwitterLogoImage() {
         // Configure the Twitter logo image
@@ -81,6 +81,7 @@ class UserNameAndBio: UIViewController {
         
         // Add nextButton constraints
         nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         view.addSubview(nextButton)
         
         NSLayoutConstraint.activate([
@@ -91,16 +92,36 @@ class UserNameAndBio: UIViewController {
         ])
     }
     
+    @objc func nextButtonTapped() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
+        vc1.modalPresentationStyle = .fullScreen
+        present(vc1, animated: true)
+    }
+    
     @objc func userNameTextFieldDidChange(_ textField: UITextField) {
         updateNextButtonState()
-        guard let text = textField.text else { return }
+        
+        guard var text = textField.text else { return }
+        
+        if text.isEmpty {
+            textField.text = "@"
+        } else if text.hasPrefix("@") {
+            text = String(text.dropFirst())
+            textField.text = "@\(text)"
+        } else {
+            text = "@\(text.replacingOccurrences(of: "@", with: ""))"
+            textField.text = text
+        }
+        
         let remainingCharacters = 18 - text.count
         let charactersLeftText = "\(remainingCharacters) characters left"
         textField.textColor = remainingCharacters >= 0 ? .black : .red
         textField.rightView = createCharactersLeftLabel(charactersLeftText)
         textField.rightViewMode = .always
     }
-    
+
+
     @objc func bioTextFieldDidChange(_ textField: UITextField) {
         updateNextButtonState()
         guard let text = textField.text else { return }
