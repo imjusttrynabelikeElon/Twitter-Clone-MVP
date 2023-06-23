@@ -28,7 +28,7 @@ struct Tweet: Encodable, Decodable {
     
     var name: String
     let message: String
-    let profileImageName: String
+    let profileName: Data?
     let title: String
     let userName: String
     let comments: String
@@ -53,7 +53,7 @@ struct Tweet: Encodable, Decodable {
  
    }
 
-//
+
 
 class MyTableViewCell: UITableViewCell {
     
@@ -222,7 +222,13 @@ class MyTableViewCell: UITableViewCell {
         
         nameLabel.text = tweet.name
         messageLabel.text = tweet.message
-        profileImageView.image = UIImage(named: tweet.profileImageName)
+        if let imageData = tweet.profileName, let image = UIImage(data: imageData) {
+            profileImageView.image = image
+        } else {
+            // Set a default image if the profile image data is nil or unable to be converted to a UIImage
+            profileImageView.image = UIImage(named: "defaultProfile")
+        }
+
         titleLabel.text = tweet.title
         userNameLabel.text = tweet.userName
         
@@ -310,7 +316,6 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
 
     
     
-    
     override func viewDidLoad() {
             super.viewDidLoad()
 
@@ -394,16 +399,16 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         
    
     @objc func addTweetButtonTapped() {
-        let addTweetViewController = AddTweet()
+        let addTweetViewController = AddTweet(profileImage: profileImageView.image)
+
         addTweetViewController.delegate = self // Set the delegate to self
+        addTweetViewController.profileImageView.image = profileImageView.image // Pass the profile image
+        
         navigationController?.modalPresentationStyle = .fullScreen
         navigationController?.modalTransitionStyle = .crossDissolve
-       
         present(addTweetViewController, animated: true, completion: nil)
     }
 
-
-    
     func addTweetButtonn() {
         addTweetbutton.setImage(UIImage(named: "addTweet"), for: .normal)
         addTweetbutton.layer.zPosition = 233
@@ -428,6 +433,9 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         profileImageView.image = profilePic
 
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let profileSideVC = TwitterProfileSideViewController()
+              profileSideVC.profileImage = profileImageView.image
         
         // Access the tab bar controller's view instead of the current view
         guard let tabBarController = self.tabBarController else { return }
@@ -504,7 +512,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     
     @objc func profileImageTapped() {
         let sideViewController = TwitterProfileSideViewController()
-        
+       sideViewController.profileImage = profileImageView.image
         let presentationDelegate = TwitterProfilePresentationDelegate()
         sideViewController.transitioningDelegate = presentationDelegate
         sideViewController.modalPresentationStyle = .custom
@@ -522,17 +530,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     
     var tweets: [Tweet] = [
         
-        Tweet(name: "Karon Bell", message: "Just learned how to program twitter. Im the person who just created this Twiiter clone. Its really not hard to code once you have the basics of coding down you just start to understand how these programs are made.", profileImageName: "kb", title: "", userName: "@karonbell", comments: "KUOH", numberOfComments: 44, retweet: "KIHUOL", numberOfRetweets: 63, likes: "IKUHU", numberOfLikes: 93, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "05/12/23", timePosted: "1:44pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
-        
-        Tweet(name: "NBA", message: "Can't wait to go on vacation next week 🌴🌊 I go on the 25th! NBA bubble - Lebron James.", profileImageName: "nba", title: "", userName: "@nba", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "09/10/2019", timePosted: "6:22am", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
-        
-        Tweet(name: "Google", message: "We our going to make a new website! it will be just like our best since Google!", profileImageName: "google", title: "", userName: "@google", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "09/11/17", timePosted: "12:03pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
-        
-        Tweet(name: "Mark Zuck", message: "facebook is my day job 😆 FaceBook has been a great app and website for years and years on. We we keep doing great things!", profileImageName: "markkk", title: "", userName: "@marky", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "01/1/12", timePosted: "1:13am", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
-        
-        Tweet(name: "Elon Musk", message: "I love this app can you tell?🤣", profileImageName: "elom", title: "", userName: "@elonMusk", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "12/24/17", timePosted: "7:21pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill"),
-        
-        Tweet(name: "justin Bieber", message: "will you be my Baby?♥️ come see me on", profileImageName: "jb", title: "", userName: "@justinBieber", comments: "KUOH", numberOfComments: 21, retweet: "KIHUOL", numberOfRetweets: 23, likes: "IKUHU", numberOfLikes: 23, views: "KUHO", numberOfViews: 54, share: "IHLPHI", date: "11/13/22", timePosted: "11:13pm", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill")
+     
         
     
         
@@ -628,10 +626,9 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         
         vc.likeImage = tweets[indexPath.row].likes
         
-        let imageName = tweets[indexPath.row].profileImageName
-        
-        let image = UIImage(named: imageName)
-        
+        let imageData = tweets[indexPath.row].profileName
+        let image = UIImage(data: imageData!)
+
         vc.selectedProfileImage = image
       
       

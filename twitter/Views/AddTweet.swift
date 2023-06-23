@@ -15,17 +15,64 @@ protocol AddTweetDelegate: AnyObject {
 }
 
 
-class AddTweet: UIViewController, UITextFieldDelegate {
+class AddTweet: UIViewController, UITextFieldDelegate, ProfilePickerDelegate {
+    func profilePickerDidFinish(with user: Userr) {
+        // Access the user information
+        let name = user.name
+        let username = user.userNaame
+        let bio = user.bio
+        let profilePic = user.profilePic
+        weak var delegate: AddTweetDelegate?
+
+
+        // Use the user information as needed
+        // For example, you can update UI elements or save the user information
+        
+        // Update UI elements with the selected profile picture
+        profileImageView.image = profilePic
+        
+        // Save the user information to UserDefaults or a database
+        UserDefaults.standard.set(name, forKey: "userName")
+        UserDefaults.standard.set(username, forKey: "userUsername")
+        UserDefaults.standard.set(bio, forKey: "userBio")
+        
+        // Convert the profile image to Data
+        if let imageData = profilePic!.pngData() {
+            // Save the profile image data to UserDefaults
+            UserDefaults.standard.set(imageData, forKey: "profileImage")
+        }
+        
+        // Proceed with any other necessary actions after profile selection
+        // For example, dismiss the profile picker view controller or navigate to another screen
+        dismiss(animated: true, completion: nil)
+    }
+
     let profileImageView = UIImageView()
     let tweetButton = UIButton()
     let tweetTextField = UITextField()
     weak var delegate: AddTweetDelegate?
+    var profileImage: Data? // Updated property type
+       
+    
+    init(profileImage: UIImage?) {
+           super.init(nibName: nil, bundle: nil)
+           
+           // Convert UIImage to Data
+           if let profileImage = profileImage {
+               self.profileImage = profileImage.jpegData(compressionQuality: 1.0)
+           }
+       }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-
+        
+       
         profileImageView.image = UIImage(named: "kb")
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.layer.cornerRadius = 23.0
@@ -73,10 +120,17 @@ class AddTweet: UIViewController, UITextFieldDelegate {
     }
 
     @objc func tweetButtonTapped() {
-        let newTweet = Tweet(name: "Your Name", message: tweetTextField.text ?? "", profileImageName: "your_profile_image_name", title: "", userName: "@your_username", comments: "KUOH", numberOfComments: 0, retweet: "KIHUOL", numberOfRetweets: 0, likes: "IKUHU", numberOfLikes: 0, views: "KUHO", numberOfViews: 0, share: "IHLPHI", date: "05/21/23", timePosted: "12:00am", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill")
+        let newTweet = Tweet(name: "Your Name", message: tweetTextField.text ?? "", profileName: profileImage, title: "", userName: "@your_username", comments: "KUOH", numberOfComments: 0, retweet: "KIHUOL", numberOfRetweets: 0, likes: "IKUHU", numberOfLikes: 0, views: "KUHO", numberOfViews: 0, share: "IHLPHI", date: "05/21/23", timePosted: "12:00am", reTweetName: "Retweets", likesName: "Likes", commentsLabel: "message", reTweetImagee: "repeat", likeImagee: "suit.heart", shareImagee: "tray.and.arrow.down.fill")
+        
+        // Inside AddTweetViewController
+        let profilePicker = ProfilePicker()
+        profilePicker.delegate = self
 
+        
         delegate?.didAddTweet(newTweet)
-        dismiss(animated: true)
+        
+        dismiss(animated: true, completion: nil)
+        
         print("Tapped")
     }
 

@@ -13,7 +13,40 @@ protocol ProfilePickerDelegate: AnyObject {
     func profilePickerDidFinish(with user: Userr)
 }
 
-class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ProfilePickerDelegate {
+    func profilePickerDidFinish(with user: Userr) {
+            // Access the user information
+            let name = user.name
+            let username = user.userNaame
+            let bio = user.bio
+            let profilePic = user.profilePic
+
+            // Use the user information as needed
+            // For example, you can update UI elements or save the user information
+            
+            // Update UI elements with the selected profile picture
+            profilePickerImage.image = profilePic
+            
+            // Save the user information to UserDefaults or a database
+            UserDefaults.standard.set(name, forKey: "userName")
+            UserDefaults.standard.set(username, forKey: "userUsername")
+            UserDefaults.standard.set(bio, forKey: "userBio")
+            
+            // Convert the profile image to Data
+        if let imageData = profilePic!.pngData() {
+                // Save the profile image data to UserDefaults
+                UserDefaults.standard.set(imageData, forKey: "profileImage")
+            }
+            
+            // Proceed with any other necessary actions after profile selection
+            // For example, dismiss the profile picker view controller or navigate to another screen
+            dismiss(animated: true, completion: nil)
+        }
+
+        // ...
+    
+       
+    
     
     @IBOutlet weak var twitterLogoImage: UIImageView!
     @IBOutlet weak var pickAProfilePic: UILabel!
@@ -120,6 +153,8 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @objc func nextButtonTapped() {
+        
+        
         let profileImage: UIImage
            if let image = profilePickerImage.image {
                profileImage = image.fixOrientation() // Apply orientation correction

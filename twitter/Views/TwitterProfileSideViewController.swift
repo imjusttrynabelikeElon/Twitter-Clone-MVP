@@ -72,6 +72,8 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
     let listsName = UILabel()
     let twitterCircle =  UIImageView()
     let twitterCircleName = UILabel()
+    var profileImage: UIImage?
+
     
     var userData = sideProfileData(name: "Karon Bell", userName: "@karonbell", followingNumber: 233, followingName: "Following", followerNumber: 233332, followerName: "Followers")
     
@@ -98,7 +100,9 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
         
         editProfileVC.delegatee = self
         
-        
+        // Set the image for profileImagePic using the profileImage property
+        profileImagePic.image = profileImage
+
         
         secProfileImageForSideView.image = UIImage(systemName: "person.fill")
         secProfileImageForSideView.translatesAutoresizingMaskIntoConstraints = false
@@ -211,7 +215,8 @@ class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDel
             followersName.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 366),
             followersName.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -620)
         ])
-        profileImagePic.image = UIImage(named: "kb")
+        profileImagePic.image = profileImage
+
         profileImagePic.translatesAutoresizingMaskIntoConstraints = false
         profileImagePic.layer.masksToBounds = false
         profileImagePic.layer.cornerRadius = 23.0
