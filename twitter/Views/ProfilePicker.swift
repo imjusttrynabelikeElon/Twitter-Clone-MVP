@@ -31,6 +31,8 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             UserDefaults.standard.set(name, forKey: "userName")
             UserDefaults.standard.set(username, forKey: "userUsername")
             UserDefaults.standard.set(bio, forKey: "userBio")
+        UserManager.shared.profileImage = profilePickerImage
+
             
             // Convert the profile image to Data
         if let imageData = profilePic!.pngData() {
@@ -153,23 +155,19 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @objc func nextButtonTapped() {
-        
-        
         let profileImage: UIImage
-           if let image = profilePickerImage.image {
-               profileImage = image.fixOrientation() // Apply orientation correction
-           } else {
-               profileImage = UIImage(named: "defaultProfile")!
-           }
-        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage)
-
-        
-             delegate?.profilePickerDidFinish(with: user)
-        // Convert the profile image to Data
-        if let imageData = profileImage.pngData() {
-            // Save the profile image data to UserDefaults
-            UserDefaults.standard.set(imageData, forKey: "profileImage")
+        if let image = profilePickerImage.image {
+            profileImage = image.fixOrientation() // Apply orientation correction
+        } else {
+            profileImage = UIImage(named: "defaultProfile")!
         }
+        
+        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage)
+        delegate?.profilePickerDidFinish(with: user)
+        
+        // Save the profile image to UserDefaults (optional)
+        let imageData = profileImage.pngData()
+        UserDefaults.standard.set(imageData, forKey: "profileImage")
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc1 = storyboard.instantiateViewController(withIdentifier: "navvv2")
@@ -177,6 +175,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
         
         present(vc1, animated: true, completion: nil)
     }
+
 
 
 

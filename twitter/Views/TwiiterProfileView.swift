@@ -38,8 +38,41 @@ protocol TwitterProfileViewDelegate: AnyObject {
     func didTapBackButton()
 }
 
+protocol TwitterProfileViewDelegatee: AnyObject {
+    func didSelectProfileImage(_ image: UIImage)
+}
 
-class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate {
+
+class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate, ProfilePickerDelegate {
+    func profilePickerDidFinish(with user: Userr) {
+        let profilePic = user.profilePic
+
+        // Update the profile image view with the selected profile picture
+        profileImagePic.image = profilePic
+
+        // Use the user information as needed
+        // For example, you can update UI elements or save the user information
+
+        // Save the user information to UserDefaults or a database
+        UserDefaults.standard.set(user.name, forKey: "ProfileName")
+        UserDefaults.standard.set(user.bio, forKey: "ProfileBio")
+
+        // Convert the profile image to Data
+        if let imageData = profilePic!.pngData() {
+            // Save the profile image data to UserDefaults
+            UserDefaults.standard.set(imageData, forKey: "profileImage")
+        }
+
+        // Call the configure method with the updated editProfile object
+        configure(with: editProfileDefaults)
+
+        // Proceed with any other necessary actions after profile selection
+        // For example, dismiss the profile picker view controller or navigate to another screen
+        dismiss(animated: true, completion: nil)
+    }
+
+    
+    
     
     var editProfileVMM: editProfileViewModel! // Declare the variable
       
@@ -74,7 +107,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     
     // Implement EditProfileDelegate method
     func didUpdateProfileImage(_ image: UIImage?) {
-        profileImagePic.image = image
+        profileImagePic.image = UserManager.shared.profileImage?.image
     }
 
     
@@ -99,10 +132,11 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     let profileEditButton = UIButton()
     let twitterHomeFeedVC = twitterHomeFeedTableView()
     var editProfileDefaults: editProfile!
+   
    // let editProfileVC: editProfileData!
     var currentLineView: UIView? // Declare the currentLineView variable
   
-    
+    let profilePicker = ProfilePicker()
     
    
     @objc func backButtonTapped() {
@@ -146,8 +180,25 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         configureTwitterImageHeaderView()
         configureProfileImagePic()
         
+        
         // Remove this line
-        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: UserManager.shared.name, userName: UserManager.shared.userName, Bio: UserManager.shared.bio, location: "Location?", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName, editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
+        editProfileDefaults = editProfile(profileImagePic: UserManager.shared.profileImage,
+                                          twitterImageHeaderView: UserManager.shared.profileImage,
+                                          Name: UserManager.shared.name,
+                                          userName: UserManager.shared.userName,
+                                          Bio: UserManager.shared.bio,
+                                          location: "Location?",
+                                          locationImage: UIImageView(image: UIImage(systemName: "network")),
+                                          link: "https://github.com/imjusttrynabelikeElon",
+                                          linkImage: UIImageView(image: UIImage(systemName: "link")),
+                                          dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")),
+                                          joined: "Joined",
+                                          dateJoined: "May 2023",
+                                          followers: twitterSideProfileVC.userData.followerNumber,
+                                          followersName: twitterSideProfileVC.userData.followerName,
+                                          following: twitterSideProfileVC.userData.followingNumber,
+                                          followingName: twitterSideProfileVC.userData.followingName,
+                                          editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
 
         
        
@@ -175,8 +226,15 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
 
     
     func configure(with editProfilee: editProfile) {
-         twitterImageHeaderView.image = editProfilee.twitterImageHeaderView?.image
-         profileImagePic.image = editProfileDefaults.profileImagePic?.image
+        let profileImage: UIImage?
+        if let image = profileImagePic.image {
+            profileImage = image.fixOrientation() // Apply orientation correction
+        } else {
+            profileImage = UIImage(named: "defaultProfile")!
+        }
+        
+        twitterImageHeaderView.image = profileImage
+        profileImagePic.image = profileImage
          profileName.text = editProfilee.Name
          profileUserName.text = editProfilee.userName
          profileLocation.text = editProfilee.location

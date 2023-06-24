@@ -14,8 +14,8 @@ class UserManager {
     
     var name: String?
     var userName: String?
-    var bio: String? // New property to hold the bio
-    var profileImageData: UIImageView? // New property to hold the profile image data
+    var bio: String?
+    var profileImage: UIImageView? // Update the type to UIImageView
     
     // Other properties and methods
     
