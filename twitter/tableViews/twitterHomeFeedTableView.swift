@@ -261,6 +261,10 @@ class MyTableViewCell: UITableViewCell {
 
 
 class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitioningDelegate, AddTweetDelegate, ProfilePickerDelegate {
+    func didUpdateName(_ name: String) {
+     //   name = name
+    }
+    
    
     func profilePickerDidFinish(with user: Userr) {
         currentUser = user

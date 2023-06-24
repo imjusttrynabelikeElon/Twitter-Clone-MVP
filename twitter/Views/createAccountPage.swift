@@ -10,6 +10,8 @@ import UIKit
 import Combine
 
 
+
+
 class createAccountPage: UIViewController {
     
     
@@ -24,9 +26,15 @@ class createAccountPage: UIViewController {
     @IBOutlet weak var password: UITextField!
     
     @IBOutlet weak var nextButton: UIButton!
+        
+    weak var addTweetDelegate: AddTweetDelegate?
     
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+         
         
         if let userName = UserDefaults.standard.string(forKey: "userName") {
             // Use the saved userName
@@ -58,6 +66,7 @@ class createAccountPage: UIViewController {
         viewModel.name = Name.text!
         viewModel.validateRegistrationForm()
     }
+    
     
     
     private func bindViews() {
@@ -109,8 +118,10 @@ class createAccountPage: UIViewController {
 
     @objc func nextButtonn() {
         guard let name = Name.text else {
-            return
-        }
+             return
+         }
+         
+         UserManager.shared.name = name
         
         // Save the name to UserDefaults
         UserDefaults.standard.set(name, forKey: "userName")

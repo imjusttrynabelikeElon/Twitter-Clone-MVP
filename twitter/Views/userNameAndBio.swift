@@ -109,14 +109,20 @@ class UserNameAndBio: UIViewController, ProfilePickerDelegate {
     }
     
     @objc func nextButtonTapped() {
-        guard let username = userNameTextField.text,
-              let bio = bioTextField.text else {
+        guard let bio = bioTextField.text else {
             return
         }
+             
+        guard let userName = userNameTextField.text else {
+            return
+        }
+        UserManager.shared.userName = userName
         
         // Save the username and bio to UserDefaults
-        UserDefaults.standard.set(username, forKey: "username")
+        UserDefaults.standard.set(userName, forKey: "username")
         UserDefaults.standard.set(bio, forKey: "bio")
+        
+       
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
