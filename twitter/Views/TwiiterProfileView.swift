@@ -147,7 +147,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         configureProfileImagePic()
         
         // Remove this line
-        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: twitterHomeFeedVC.tweets[0].name, userName: twitterHomeFeedVC.tweets[0].userName, Bio: "IOS Developer. 21. Just created a remake of the twitter app, the one you're looking at now. Elon is the goat.", location: "New York, NY", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName, editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
+        editProfileDefaults = editProfile(profileImagePic: UIImageView(image: UIImage(named: "kb")), twitterImageHeaderView: UIImageView(image: UIImage(named: "kbb")), Name: UserManager.shared.name, userName: UserManager.shared.userName, Bio: UserManager.shared.bio, location: "Location?", locationImage: UIImageView(image: UIImage(systemName: "network")), link: "https://github.com/imjusttrynabelikeElon", linkImage: UIImageView(image: UIImage(systemName: "link")), dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")), joined: "Joined", dateJoined: "May 2023", followers: twitterSideProfileVC.userData.followerNumber, followersName: twitterSideProfileVC.userData.followerName, following: twitterSideProfileVC.userData.followingNumber, followingName: twitterSideProfileVC.userData.followingName, editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
 
         
        
@@ -159,8 +159,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         configureDateImage()
         configureWhiteLine() // Call the configureWhiteLine function
       //  configureLinkTextView(with: editProfileDefaults)
-        print(twitterHomeFeedVC.tweets[0].name)
-        print(twitterHomeFeedVC.tweets[0].userName)
+    
     }
     
     

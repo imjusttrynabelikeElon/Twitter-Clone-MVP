@@ -116,14 +116,15 @@ class UserNameAndBio: UIViewController, ProfilePickerDelegate {
         guard let userName = userNameTextField.text else {
             return
         }
+        
         UserManager.shared.userName = userName
+        UserManager.shared.bio = bio // Store the bio in UserManager
         
         // Save the username and bio to UserDefaults
         UserDefaults.standard.set(userName, forKey: "username")
         UserDefaults.standard.set(bio, forKey: "bio")
         
-       
-        
+        // Present the next view controller or perform any other necessary actions
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc1 = storyboard.instantiateViewController(withIdentifier: "tabBar")
         vc1.modalPresentationStyle = .fullScreen
