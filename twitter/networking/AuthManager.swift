@@ -43,16 +43,20 @@ class AuthManager {
                     promise(.failure(error))
                     print("KEEE")
                 } else if let user = authResult?.user {
+                    // Store the name and userName in the UserManager singleton
+                    UserManager.shared.name = UserManager.shared.name
+                    UserManager.shared.userName = UserManager.shared.userName
+                    
                     promise(.success(user))
                     print("IJYGVIGUVIU")
                 } else {
                     promise(.failure(NSError(domain: "LoginError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])))
                     print("IYUGVJUFYV")
-                    
                 }
             }
         }
         .eraseToAnyPublisher()
     }
+
 
 }

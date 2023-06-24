@@ -22,7 +22,7 @@ class AddTweet: UIViewController, UITextFieldDelegate, ProfilePickerDelegate {
         let username = user.userNaame
         let bio = user.bio
         let profilePic = user.profilePic
-        weak var delegate: AddTweetDelegate?
+      
         // Use the user information as needed
         // For example, you can update UI elements or save the user information
         
@@ -168,7 +168,7 @@ class AddTweet: UIViewController, UITextFieldDelegate, ProfilePickerDelegate {
             profilePicker.delegate = self
             
             
-            delegate?.didAddTweet(newTweet)
+        delegate?.didAddTweet(newTweet)
             
             dismiss(animated: true, completion: nil)
             
