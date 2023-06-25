@@ -21,9 +21,6 @@ struct sideProfileData {
 
 
 
-
-
-
 class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate, ProfileDataDelegate {
     
     func updateName(_ name: String) {

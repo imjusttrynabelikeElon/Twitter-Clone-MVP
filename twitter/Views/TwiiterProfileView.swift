@@ -177,13 +177,24 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         
         view.backgroundColor = .white
         
-        configureTwitterImageHeaderView()
-        configureProfileImagePic()
+        // Retrieve the profile image data from UserDefaults
+          if let imageData = UserDefaults.standard.data(forKey: "profileImage") {
+              if let profileImage = UIImage(data: imageData) {
+                  twitterImageHeaderView.image = profileImage
+              } else {
+                  // Use a default profile image or handle the case when the image data is invalid
+                  twitterImageHeaderView.image = profileImagePic.image
+              }
+          } else {
+              // Use a default profile image or handle the case when the image data is not found
+              twitterImageHeaderView.image =  UIImage(named: "defaultProfile")!
+          }
+      
         
-        
+       
         // Remove this line
-        editProfileDefaults = editProfile(profileImagePic: UserManager.shared.profileImage,
-                                          twitterImageHeaderView: UserManager.shared.profileImage,
+        editProfileDefaults = editProfile(profileImagePic:   twitterImageHeaderView ,
+                                          twitterImageHeaderView:   twitterImageHeaderView ,
                                           Name: UserManager.shared.name,
                                           userName: UserManager.shared.userName,
                                           Bio: UserManager.shared.bio,
@@ -202,6 +213,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
 
         
        
+        configureTwitterImageHeaderView()
+        configureProfileImagePic()
+        
+        
         configure(with: editProfileDefaults)
         configureLinkTextView(with: editProfileDefaults)
     //    configureLinkTextView(with: editProfileDefaults)
@@ -233,8 +248,8 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
             profileImage = UIImage(named: "defaultProfile")!
         }
         
-        twitterImageHeaderView.image = profileImage
-        profileImagePic.image = profileImage
+        twitterImageHeaderView.image = twitterImageHeaderView.image
+        profileImagePic.image = twitterImageHeaderView.image
          profileName.text = editProfilee.Name
          profileUserName.text = editProfilee.userName
          profileLocation.text = editProfilee.location

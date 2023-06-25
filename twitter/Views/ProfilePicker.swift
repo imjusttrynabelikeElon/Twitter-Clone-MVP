@@ -31,7 +31,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             UserDefaults.standard.set(name, forKey: "userName")
             UserDefaults.standard.set(username, forKey: "userUsername")
             UserDefaults.standard.set(bio, forKey: "userBio")
-        UserManager.shared.profileImage = profilePickerImage
+      
 
             
             // Convert the profile image to Data
@@ -158,6 +158,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
         let profileImage: UIImage
         if let image = profilePickerImage.image {
             profileImage = image.fixOrientation() // Apply orientation correction
+            UserManager.shared.profileImage = profilePickerImage
         } else {
             profileImage = UIImage(named: "defaultProfile")!
         }

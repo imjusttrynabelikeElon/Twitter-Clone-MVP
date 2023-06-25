@@ -44,12 +44,14 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
     }
 
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
         
-      
+        
+    
         configureTitleLabel()
         configureProfileImagePic()
         configureTwitterProfileImageViewHeader()
