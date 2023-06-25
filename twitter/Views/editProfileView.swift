@@ -14,10 +14,12 @@ protocol EditProfileDelegate: AnyObject {
     func didUpdateProfileImage(_ image: UIImage?)
     func didUpdateName(_ name: String)
     func didUpdateBio(_ bio: String)
+    func didUpdateLocation(_ location: String)
 }
 protocol ProfileDataDelegate: AnyObject {
     func updateName(_ name: String)
     func updateBio(_ bio: String)
+    func updateLocation(_ location: String)
         
 }
 
@@ -40,9 +42,11 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         editProfileVM.configureTitleLabel()
         editProfileVM.configureProfileImagePic()
         editProfileVM.configureTwitterProfileImageViewHeader()
+        editProfileVM.configureLocationTextField()
         editProfileVM.configureNameTextField() // Add this line to call the name text field configuration
         editProfileVM.configureBioTextView() // Add this line to call the bio text view configuration
-             
+    
+
         // Retrieve the saved values from UserDefaults
          if let savedName = UserDefaults.standard.string(forKey: "name") {
              editProfileDataVC.self.name = savedName
@@ -53,6 +57,12 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
              editProfileDataVC.self.bio = savedBio
            //  bioTextView?.text = savedBio // Update the bio text view with the saved bio
             }
+
+        
+        if let savedLocation = UserDefaults.standard.string(forKey: "location") {
+            editProfileDataVC.self.location = savedLocation
+          //  bioTextView?.text = savedBio // Update the bio text view with the saved bio
+           }
 
       
         view.backgroundColor = .black

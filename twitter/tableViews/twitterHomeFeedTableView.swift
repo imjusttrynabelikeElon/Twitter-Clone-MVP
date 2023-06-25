@@ -363,10 +363,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
                  tweets[0].name = name
                  
                  
-                 // Retrieve the profile image from the current user and set it in the profileImageView
-                 let currentUser = Userr(name: "John Doe", userNaame: "johndoe", bio: "Hello, world!", profilePic: UIImage(named: "profileImage")!)
-                 profileImageViewImage(profilePic: currentUser.profilePic!)
-
+             
                  
              }
 
@@ -434,6 +431,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
     
     func profileImageViewImage(profilePic: UIImage) {
      //    profileImageView.image = UIImage(named: "defaultProfile")
+        
         profileImageView.image = profilePic
 
         profileImageView.translatesAutoresizingMaskIntoConstraints = false

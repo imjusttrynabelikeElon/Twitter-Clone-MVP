@@ -44,6 +44,12 @@ protocol TwitterProfileViewDelegatee: AnyObject {
 
 
 class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate, ProfilePickerDelegate {
+   
+    
+    func updateLocation(_ location: String) {
+        
+    }
+    
     func profilePickerDidFinish(with user: Userr) {
         let profilePic = user.profilePic
 
@@ -54,8 +60,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         // For example, you can update UI elements or save the user information
 
         // Save the user information to UserDefaults or a database
+        
         UserDefaults.standard.set(user.name, forKey: "ProfileName")
         UserDefaults.standard.set(user.bio, forKey: "ProfileBio")
+        UserDefaults.standard.set(user.location, forKey: "ProfileLocation")
 
         // Convert the profile image to Data
         if let imageData = profilePic!.pngData() {
@@ -87,6 +95,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
           UserDefaults.standard.set(bio, forKey: "ProfileBio")
       }
   
+    func didUpdateLocation(_ location: String) {
+           profileLocation.text = location
+        UserDefaults.standard.set(location, forKey: "ProfileLocation")
+    }
   
   
   
@@ -165,6 +177,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
             if let bio = UserDefaults.standard.string(forKey: "ProfileBio") {
                 profileBio.text = bio
             }
+        
+        if let location = UserDefaults.standard.string(forKey: "ProfileLocation") {
+            profileLocation.text = location
+        }
 
             // ...
 
@@ -198,7 +214,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
                                           Name: UserManager.shared.name,
                                           userName: UserManager.shared.userName,
                                           Bio: UserManager.shared.bio,
-                                          location: "Location?",
+                                          location: UserManager.shared.location,
                                           locationImage: UIImageView(image: UIImage(systemName: "network")),
                                           link: "https://github.com/imjusttrynabelikeElon",
                                           linkImage: UIImageView(image: UIImage(systemName: "link")),

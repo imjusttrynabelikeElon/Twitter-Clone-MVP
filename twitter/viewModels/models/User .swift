@@ -15,6 +15,7 @@ struct Userr {
     var userNaame: String
     var bio: String
     var profilePic: UIImage?
+    var location: String
 }
 
 

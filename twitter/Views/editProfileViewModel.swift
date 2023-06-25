@@ -57,7 +57,9 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         configureTwitterProfileImageViewHeader()
         
         configureNameTextField() // Add this line to
+     //   configureLocationTextField()
         configureBioTextView() // Add this line to c
+      
      
         // Retrieve the saved values from UserDefaults
          if let savedName = UserDefaults.standard.string(forKey: "name") {
@@ -97,6 +99,36 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         print(textView.text as Any)
     }
       // ...
+    
+    func configureLocationTextField() {
+        // Create and add location text field
+        editProfileDataVM.locationTextField = UITextField()
+        editProfileDataVM.locationTextField!.delegate = self
+        editProfileDataVM.locationTextField!.placeholder = "Location"
+        editProfileDataVM.locationTextField!.borderStyle = .roundedRect
+        editProfileDataVM.locationTextField!.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(editProfileDataVM.locationTextField!)
+        
+        NSLayoutConstraint.activate([
+            editProfileDataVM.locationTextField!.topAnchor.constraint(equalTo: bioTextView!.bottomAnchor, constant: 60),
+            editProfileDataVM.locationTextField!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            editProfileDataVM.locationTextField!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            editProfileDataVM.locationTextField!.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+     
+        editProfileDataVM.locationLabel.text = "Location"
+        editProfileDataVM.locationLabel.textColor = .white
+        editProfileDataVM.locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(editProfileDataVM.locationLabel)
+        
+        NSLayoutConstraint.activate([
+            editProfileDataVM.locationLabel.bottomAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.topAnchor, constant: -8),
+            editProfileDataVM.locationLabel.leadingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.leadingAnchor),
+            editProfileDataVM.locationLabel.trailingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.trailingAnchor)
+        ])
+    }
+
     
     
     

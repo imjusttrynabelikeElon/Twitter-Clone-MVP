@@ -20,7 +20,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             let username = user.userNaame
             let bio = user.bio
             let profilePic = user.profilePic
-
+            
             // Use the user information as needed
             // For example, you can update UI elements or save the user information
             
@@ -31,6 +31,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             UserDefaults.standard.set(name, forKey: "userName")
             UserDefaults.standard.set(username, forKey: "userUsername")
             UserDefaults.standard.set(bio, forKey: "userBio")
+     
       
 
             
@@ -163,7 +164,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             profileImage = UIImage(named: "defaultProfile")!
         }
         
-        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage)
+        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage, location: "")
         delegate?.profilePickerDidFinish(with: user)
         
         // Save the profile image to UserDefaults (optional)

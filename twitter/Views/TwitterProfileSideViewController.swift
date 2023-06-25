@@ -22,6 +22,10 @@ struct sideProfileData {
 
 
 class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate, ProfileDataDelegate {
+    func updateLocation(_ location: String) {
+        
+    }
+    
     
     func updateName(_ name: String) {
           userData.name = name
