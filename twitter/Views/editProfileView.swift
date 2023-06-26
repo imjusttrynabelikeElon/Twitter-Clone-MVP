@@ -15,11 +15,13 @@ protocol EditProfileDelegate: AnyObject {
     func didUpdateName(_ name: String)
     func didUpdateBio(_ bio: String)
     func didUpdateLocation(_ location: String)
+    func didUpdateLink(_ link: String)
 }
 protocol ProfileDataDelegate: AnyObject {
     func updateName(_ name: String)
     func updateBio(_ bio: String)
     func updateLocation(_ location: String)
+    func updateLink(_ link: String)
         
 }
 
@@ -45,7 +47,7 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         editProfileVM.configureLocationTextField()
         editProfileVM.configureNameTextField() // Add this line to call the name text field configuration
         editProfileVM.configureBioTextView() // Add this line to call the bio text view configuration
-    
+        editProfileVM.configureLinkTextField()
 
         // Retrieve the saved values from UserDefaults
          if let savedName = UserDefaults.standard.string(forKey: "name") {
@@ -63,6 +65,10 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
             editProfileDataVC.self.location = savedLocation
        //     lo.text = savedBio // Update the bio text view with the saved bio
            }
+        
+        if let savedLink = UserDefaults.standard.string(forKey: "link") {
+            editProfileDataVC.self.link = savedLink
+        }
 
       
         view.backgroundColor = .black

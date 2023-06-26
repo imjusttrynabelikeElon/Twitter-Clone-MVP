@@ -17,19 +17,23 @@ struct editProfileData {
     var updatedName: String? // Store the updated name
     var updatedBio: String? // Store the updated bio
     var updatedLocation: String?
+    var updatedLink: String?
     
     var name: String?
     var bio: String?
     var location: String?
+    var link: String?
     
     var saveButton: UIBarButtonItem?
     
     var nameTextField: UITextField?
     var bioTextView: UITextView?
     var locationTextField: UITextField?
+    var linkTextField: UITextField?
     
     // Add label above location text field
     let locationLabel = UILabel()
+    let linkLabel = UILabel()
     
     var profileImagePic: UIImageView?
   

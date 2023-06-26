@@ -164,7 +164,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
             profileImage = UIImage(named: "defaultProfile")!
         }
         
-        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage, location: "")
+        let user = Userr(name: "", userNaame: "", bio: "", profilePic: profileImage, location: "", link: "")
         delegate?.profilePickerDidFinish(with: user)
         
         // Save the profile image to UserDefaults (optional)

@@ -44,7 +44,13 @@ protocol TwitterProfileViewDelegatee: AnyObject {
 
 
 class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDelegate, ProfilePickerDelegate {
+    func updateLink(_ link: String) {
+        
+    }
+    
    
+    
+  
     
     func updateLocation(_ location: String) {
         
@@ -64,6 +70,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         UserDefaults.standard.set(user.name, forKey: "ProfileName")
         UserDefaults.standard.set(user.bio, forKey: "ProfileBio")
         UserDefaults.standard.set(user.location, forKey: "ProfileLocation")
+        UserDefaults.standard.set(user.link, forKey: "ProfileLink")
 
         // Convert the profile image to Data
         if let imageData = profilePic!.pngData() {
@@ -100,6 +107,10 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         UserDefaults.standard.set(location, forKey: "ProfileLocation")
     }
   
+    func didUpdateLink(_ link: String) {
+        profileLink.text = link
+        UserDefaults.standard.set(link, forKey: "ProfileLink")
+    }
   
   
    
@@ -130,6 +141,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     var profileName = UILabel()
     var profileUserName = UILabel()
     var profileLocation = UILabel()
+    var profileLink = UILabel()
     var profileLocationImage = UIImageView()
     var profileBio = UILabel()
     var linkTextView = UITextView()
@@ -182,6 +194,9 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
             profileLocation.text = location
         }
 
+        if let link = UserDefaults.standard.string(forKey: "ProfileLink") {
+            profileLink.text = link
+        }
             // ...
 
         let twitterSideProfileVC = TwitterProfileSideViewController()
@@ -208,23 +223,25 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
         
        
         // Remove this line
-        editProfileDefaults = editProfile(profileImagePic:   twitterImageHeaderView ,
-                                          twitterImageHeaderView:   twitterImageHeaderView ,
-                                          Name: UserManager.shared.name,
-                                          userName: UserManager.shared.userName,
-                                          Bio: UserManager.shared.bio,
-                                          location: UserManager.shared.locationTextField?.text,
-                                          locationImage: UIImageView(image: UIImage(systemName: "network")),
-                                          link: "https://github.com/imjusttrynabelikeElon",
-                                          linkImage: UIImageView(image: UIImage(systemName: "link")),
-                                          dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")),
-                                          joined: "Joined",
-                                          dateJoined: "May 2023",
-                                          followers: twitterSideProfileVC.userData.followerNumber,
-                                          followersName: twitterSideProfileVC.userData.followerName,
-                                          following: twitterSideProfileVC.userData.followingNumber,
-                                          followingName: twitterSideProfileVC.userData.followingName,
-                                          editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160)))
+        editProfileDefaults = editProfile(
+            profileImagePic: twitterImageHeaderView,
+            twitterImageHeaderView: twitterImageHeaderView,
+            Name: UserManager.shared.name,
+            userName: UserManager.shared.userName,
+            Bio: UserManager.shared.bio,
+            location: UserManager.shared.locationTextField?.text,
+            locationImage: UIImageView(image: UIImage(systemName: "network")),
+            link: profileLink.text, // Assign the text value directly
+            linkImage: UIImageView(image: UIImage(systemName: "link")),
+            dateJoinedImage: UIImageView(image: UIImage(systemName: "calendar")),
+            joined: "Joined",
+            dateJoined: "May 2023",
+            followers: twitterSideProfileVC.userData.followerNumber,
+            followersName: twitterSideProfileVC.userData.followerName,
+            following: twitterSideProfileVC.userData.followingNumber,
+            followingName: twitterSideProfileVC.userData.followingName,
+            editProfileButton: UIButton(frame: CGRect(x: 113, y: 110, width: 70, height: 160))
+        )
 
         
        
@@ -268,6 +285,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
          profileName.text = editProfilee.Name
          profileUserName.text = editProfilee.userName
          profileLocation.text = editProfilee.location
+        profileLink.text = editProfilee.link
          profileLocationImage.image = editProfilee.locationImage?.image
          profileLinkImage.image = editProfilee.linkImage?.image
          linkTextView.text = editProfilee.link
@@ -302,7 +320,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
          configureProfileFollowersName()
          configureEditProfileButton()
          configureTabBarController()
-        configureWhiteLine()
+         configureWhiteLine()
         
         // Retrieve the saved name and bio from UserDefaults
         if let name = UserDefaults.standard.string(forKey: "ProfileName") {
@@ -328,6 +346,12 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
              updatedProfile.location = location // Update the location property
              // editProfilee = updatedProfile // Assign the updated profile back to the constant
          }
+        
+        if let link = UserDefaults.standard.string(forKey: "ProfileLink") {
+            profileLink.text = link
+            var updatedlink = editProfilee
+            updatedlink.link = link
+        }
 
      }
     
@@ -415,6 +439,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
           // Set initial values of name and bio from TwitterProfileView
           editProfileView.name = profileName.text
           editProfileView.bio = profileBio.text
+        editProfileView.link = profileLink.text
 
           let navigationController = UINavigationController(rootViewController: editProfileView)
           present(navigationController, animated: true, completion: nil)
@@ -529,8 +554,8 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
     func configureLinkTextView(with profile: editProfile) {
         linkTextView.translatesAutoresizingMaskIntoConstraints = false
         
-        if let link = profile.link {
-            let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: URL(string: link)!])
+        if let link = profile.link, let url = URL(string: link) {
+            let attributedString = NSAttributedString(string: link, attributes: [NSAttributedString.Key.link: url])
             linkTextView.attributedText = attributedString
             linkTextView.text = link
         }
@@ -546,9 +571,8 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
             linkTextView.topAnchor.constraint(equalTo: profileLocation.topAnchor, constant: 50),
             linkTextView.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 498)
         ])
-        
-     
     }
+
 
 
 

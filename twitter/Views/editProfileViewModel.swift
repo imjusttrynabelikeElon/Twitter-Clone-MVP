@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 
+
 class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     var editProfileDataVM = editProfileData()
@@ -20,16 +21,19 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
     var updatedName: String? // Store the updated name
     var updatedBio: String? // Store the updated bio
     var updatedLocation: String?
+    var updatedLink: String?
     
     var name: String?
     var bio: String?
     var Location: String?
+    var link: String?
     
     var saveButton: UIBarButtonItem?
     
     var nameTextField: UITextField?
     var bioTextView: UITextView?
     var LocationTextView: UITextField?
+    var linkTextView: UITextField?
     
     init(profileImage: UIImage?, twitterImageHeaderView: UIImage?) {
          super.init(nibName: nil, bundle: nil)
@@ -63,8 +67,15 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         configureNameTextField() // Add this line to
         configureBioTextView() // Add this line to c
         configureLocationTextField()
+        configureLinkTextField()
            saveChanges()
-         
+        
+       
+        // Configure linkTextField...
+
+        UserManager.shared.linkTextField?.text = editProfileDataVM.linkTextField?.text
+        UserManager.shared.link = editProfileDataVM.link
+        
            // Retrieve the saved values from UserDefaults
            if let savedName = UserDefaults.standard.string(forKey: "name") {
                editProfileDataVM.name = savedName
@@ -81,6 +92,15 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
                editProfileDataVM.locationTextField?.text = savedLocation // Update the location text field with the saved location
                UserManager.shared.locationTextField?.text = savedLocation
            }
+        
+        
+        if let savedLink = UserDefaults.standard.string(forKey: "link") {
+            editProfileDataVM.updatedLink = savedLink
+            editProfileDataVM.link = savedLink
+            editProfileDataVM.linkTextField?.text = savedLink
+            UserManager.shared.linkTextField?.text = savedLink
+            UserManager.shared.link = savedLink
+        }
         // Add cancel button
          let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
          cancelButton.tintColor = .white
@@ -98,9 +118,19 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        editProfileDataVM.saveButton?.isEnabled = true // Enable the save button
-        print(textField.text as Any)
+        // Update the corresponding variable with the new text
+        if textField == nameTextField {
+            editProfileDataVM.updatedName = textField.text
+        } else if textField == LocationTextView {
+            editProfileDataVM.updatedLocation = textField.text
+        } else if textField == linkTextView {
+            editProfileDataVM.updatedLink = textField.text
         }
+        
+        // Enable the save button
+        editProfileDataVM.saveButton?.isEnabled = true
+    }
+
     
   
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -112,21 +142,25 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
 
     
     @objc func saveButtonTapped() {
-        if let updatedName = updatedName, let updatedBio = updatedBio, let updatedLocation = updatedLocation {
+        if let updatedName = updatedName, let updatedBio = updatedBio, let updatedLocation = updatedLocation, let updatedLink = updatedLink {
             // Call the delegate methods to pass the updated data
             delegate?.didUpdateName(updatedName)
             delegatee?.updateBio(updatedBio)
             delegate?.didUpdateLocation(updatedLocation)
+            delegatee?.updateLink(updatedLink)
+            delegatee?.updateLink(updatedLink)
             
             // Update the stored values
             name = updatedName
             bio = updatedBio
             Location = updatedLocation // Use the variable name "Location"
+            link = updatedLink
             
             // Save the updated values to UserDefaults
             UserDefaults.standard.set(updatedName, forKey: "name")
             UserDefaults.standard.set(updatedBio, forKey: "bio")
             UserDefaults.standard.set(updatedLocation, forKey: "location")
+            UserDefaults.standard.set(updatedLink, forKey: "link")
             UserDefaults.standard.synchronize()
             
             saveButton?.isEnabled = false
@@ -134,7 +168,14 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
             // Update the text fields with the updated values
             nameTextField?.text = updatedName
             bioTextView?.text = updatedBio
-            editProfileDataVM.locationTextField?.text = updatedLocation
+            linkTextView?.text = updatedLink
+            
+            // Update the link text field in editProfileDataVM
+            editProfileDataVM.linkTextField?.text = updatedLink
+            linkTextView?.text = updatedLink
+            
+            // Update the link text field in UserManager
+            UserManager.shared.linkTextField?.text = updatedLink
         } else {
             saveButton?.title = "Save"
             saveButton?.isEnabled = true
@@ -178,6 +219,56 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         
         // Add an observer for the text field's text property to detect changes
         editProfileDataVM.locationTextField!.addTarget(self, action: #selector(locationTextFieldDidChange(_:)), for: .editingChanged)
+    }
+
+    func configureLinkTextField() {
+        // Create and add link text field
+        editProfileDataVM.linkTextField = UITextField()
+        editProfileDataVM.linkTextField!.delegate = self
+        editProfileDataVM.linkTextField!.placeholder = "Link"
+        editProfileDataVM.linkTextField!.borderStyle = .roundedRect
+        editProfileDataVM.linkTextField!.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(editProfileDataVM.linkTextField!)
+
+        // Set the variable name correctly in the constraints
+        NSLayoutConstraint.activate([
+            editProfileDataVM.linkTextField!.topAnchor.constraint(equalTo: view.topAnchor, constant: 660),
+            editProfileDataVM.linkTextField!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            editProfileDataVM.linkTextField!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            editProfileDataVM.linkTextField!.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
+        // Add label above link text field
+        editProfileDataVM.linkLabel.text = "Link" // Assign text to linkLabel
+        editProfileDataVM.linkLabel.textColor = .white
+        editProfileDataVM.linkLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(editProfileDataVM.linkLabel)
+
+        // Set the variable name correctly in the constraints
+        NSLayoutConstraint.activate([
+            editProfileDataVM.linkLabel.bottomAnchor.constraint(equalTo: editProfileDataVM.linkTextField!.topAnchor, constant: -8),
+            editProfileDataVM.linkLabel.leadingAnchor.constraint(equalTo: editProfileDataVM.linkTextField!.leadingAnchor),
+            editProfileDataVM.linkLabel.trailingAnchor.constraint(equalTo: editProfileDataVM.linkTextField!.trailingAnchor)
+        ])
+
+        // Assign initial value to linkTextField
+        editProfileDataVM.linkTextField!.text = editProfileDataVM.link
+
+        // Add an observer for the text field's text property to detect changes
+        editProfileDataVM.linkTextField!.addTarget(self, action: #selector(linkTextFieldDidChange(_:)), for: .editingChanged)
+    }
+
+    @objc func linkTextFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            editProfileDataVM.updatedLink = text // Update the updatedLink property with the updated text
+            editProfileDataVM.delegate?.didUpdateLink(text)
+            
+            delegate?.didUpdateLink(link!)
+            print(textField.text as Any)
+            
+            // Update the link text field in UserManager
+            UserManager.shared.linkTextField?.text = text
+        }
     }
 
 
@@ -370,12 +461,24 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
             if textField == editProfileDataVM.nameTextField {
                 editProfileDataVM.updatedName = text // Update the updatedName property
                 delegate?.didUpdateName(text) // Notify the delegate of the updated name
+                
+                
             } else if textField == editProfileDataVM.locationTextField {
                 editProfileDataVM.updatedLocation = text // Update the updatedLocation property
                 delegate?.didUpdateLocation(text) // Notify the delegate of the updated location
                 
                 // Save the updated location to UserDefaults
                 UserDefaults.standard.set(text, forKey: "location")
+                UserDefaults.standard.synchronize()
+                
+                
+            } else if textField == editProfileDataVM.linkTextField {
+                editProfileDataVM.updatedLink = text
+                editProfileDataVM.link = text
+                    delegate?.didUpdateLink(text)
+                delegatee?.updateLink(text)
+                
+                UserDefaults.standard.set(text, forKey: "link")
                 UserDefaults.standard.synchronize()
             }
         }
@@ -396,6 +499,7 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
               delegatee?.updateName(name) // Notify the delegate of the updated name
           }
 
+        
           if let bio = updatedBio {
               UserDefaults.standard.set(bio, forKey: "bio")
               delegatee?.updateBio(bio) // Notify the delegate of the updated bio
@@ -406,6 +510,14 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
             delegatee?.updateLocation(location)
           
         }
+        
+        if let link = updatedLink {
+            UserDefaults.standard.set(link, forKey: "link")
+            delegatee?.updateLink(link)
+            delegate?.didUpdateLink(link)
+            UserManager.shared.locationTextField?.text = link
+        }
+    
           UserDefaults.standard.synchronize()
       }
   

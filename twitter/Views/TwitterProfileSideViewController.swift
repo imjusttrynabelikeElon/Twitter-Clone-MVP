@@ -22,6 +22,10 @@ struct sideProfileData {
 
 
 class TwitterProfileSideViewController: UIViewController, UIGestureRecognizerDelegate, TwitterProfileViewDelegate, ProfileDataDelegate {
+    func updateLink(_ link: String) {
+        
+    }
+    
     func updateLocation(_ location: String) {
         
     }
