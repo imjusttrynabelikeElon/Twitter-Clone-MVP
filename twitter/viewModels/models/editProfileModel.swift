@@ -27,6 +27,7 @@ struct editProfileData {
     var nameTextField: UITextField?
     var bioTextView: UITextView?
     var locationTextField: UITextField?
+    
     // Add label above location text field
     let locationLabel = UILabel()
     

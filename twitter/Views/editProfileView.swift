@@ -61,7 +61,7 @@ class EditProfileView: UIViewController, UITextFieldDelegate, UITextViewDelegate
         
         if let savedLocation = UserDefaults.standard.string(forKey: "location") {
             editProfileDataVC.self.location = savedLocation
-          //  bioTextView?.text = savedBio // Update the bio text view with the saved bio
+       //     lo.text = savedBio // Update the bio text view with the saved bio
            }
 
       

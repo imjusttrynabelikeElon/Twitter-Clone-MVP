@@ -19,13 +19,17 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
     
     var updatedName: String? // Store the updated name
     var updatedBio: String? // Store the updated bio
+    var updatedLocation: String?
     
     var name: String?
     var bio: String?
+    var Location: String?
+    
     var saveButton: UIBarButtonItem?
     
     var nameTextField: UITextField?
     var bioTextView: UITextView?
+    var LocationTextView: UITextField?
     
     init(profileImage: UIImage?, twitterImageHeaderView: UIImage?) {
          super.init(nibName: nil, bundle: nil)
@@ -57,21 +61,26 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         configureTwitterProfileImageViewHeader()
         
         configureNameTextField() // Add this line to
-     //   configureLocationTextField()
         configureBioTextView() // Add this line to c
-      
-     
-        // Retrieve the saved values from UserDefaults
-         if let savedName = UserDefaults.standard.string(forKey: "name") {
-             editProfileDataVM.name = savedName
-           //  nameTextField?.text = savedName // Update the name text field with the saved name
-         }
-              
-         if let savedBio = UserDefaults.standard.string(forKey: "bio") {
-             editProfileDataVM.bio = savedBio
-           //  bioTextView?.text = savedBio // Update the bio text view with the saved bio
-            }
-       
+        configureLocationTextField()
+           saveChanges()
+         
+           // Retrieve the saved values from UserDefaults
+           if let savedName = UserDefaults.standard.string(forKey: "name") {
+               editProfileDataVM.name = savedName
+               // nameTextField?.text = savedName // Update the name text field with the saved name
+           }
+                 
+           if let savedBio = UserDefaults.standard.string(forKey: "bio") {
+               editProfileDataVM.bio = savedBio
+               // bioTextView?.text = savedBio // Update the bio text view with the saved bio
+           }
+           
+           if let savedLocation = UserDefaults.standard.string(forKey: "location") {
+               editProfileDataVM.updatedLocation = savedLocation // Update the updatedLocation property
+               editProfileDataVM.locationTextField?.text = savedLocation // Update the location text field with the saved location
+               UserManager.shared.locationTextField?.text = savedLocation
+           }
         // Add cancel button
          let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
          cancelButton.tintColor = .white
@@ -100,6 +109,39 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
     }
       // ...
     
+
+    
+    @objc func saveButtonTapped() {
+        if let updatedName = updatedName, let updatedBio = updatedBio, let updatedLocation = updatedLocation {
+            // Call the delegate methods to pass the updated data
+            delegate?.didUpdateName(updatedName)
+            delegatee?.updateBio(updatedBio)
+            delegate?.didUpdateLocation(updatedLocation)
+            
+            // Update the stored values
+            name = updatedName
+            bio = updatedBio
+            Location = updatedLocation // Use the variable name "Location"
+            
+            // Save the updated values to UserDefaults
+            UserDefaults.standard.set(updatedName, forKey: "name")
+            UserDefaults.standard.set(updatedBio, forKey: "bio")
+            UserDefaults.standard.set(updatedLocation, forKey: "location")
+            UserDefaults.standard.synchronize()
+            
+            saveButton?.isEnabled = false
+            
+            // Update the text fields with the updated values
+            nameTextField?.text = updatedName
+            bioTextView?.text = updatedBio
+            editProfileDataVM.locationTextField?.text = updatedLocation
+        } else {
+            saveButton?.title = "Save"
+            saveButton?.isEnabled = true
+        }
+    }
+
+
     func configureLocationTextField() {
         // Create and add location text field
         editProfileDataVM.locationTextField = UITextField()
@@ -109,54 +151,33 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
         editProfileDataVM.locationTextField!.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(editProfileDataVM.locationTextField!)
         
+        // Set the variable name correctly in the constraints
         NSLayoutConstraint.activate([
-            editProfileDataVM.locationTextField!.topAnchor.constraint(equalTo: bioTextView!.bottomAnchor, constant: 60),
+            editProfileDataVM.locationTextField!.topAnchor.constraint(equalTo: view.topAnchor, constant: 560),
             editProfileDataVM.locationTextField!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             editProfileDataVM.locationTextField!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             editProfileDataVM.locationTextField!.heightAnchor.constraint(equalToConstant: 40)
         ])
         
-     
-        editProfileDataVM.locationLabel.text = "Location"
-        editProfileDataVM.locationLabel.textColor = .white
-        editProfileDataVM.locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(editProfileDataVM.locationLabel)
+        // Add label above location text field
+        let locationLabel = UILabel()
+        locationLabel.text = "Location"
+        locationLabel.textColor = .white
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(locationLabel)
         
+        // Set the variable name correctly in the constraints
         NSLayoutConstraint.activate([
-            editProfileDataVM.locationLabel.bottomAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.topAnchor, constant: -8),
-            editProfileDataVM.locationLabel.leadingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.leadingAnchor),
-            editProfileDataVM.locationLabel.trailingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.trailingAnchor)
+            locationLabel.bottomAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.topAnchor, constant: -8),
+            locationLabel.leadingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.leadingAnchor),
+            locationLabel.trailingAnchor.constraint(equalTo: editProfileDataVM.locationTextField!.trailingAnchor)
         ])
-    }
-
-    
-    
-    
-    @objc func saveButtonTapped() {
-        if let updatedName = updatedName, let updatedBio = updatedBio {
-            // Call the delegate methods to pass the updated data
-            editProfileDataVM.delegate?.didUpdateName(updatedName)
-            editProfileDataVM.delegatee?.updateBio(updatedBio)
-            
-            // Update the stored values
-            editProfileDataVM.self.name = updatedName
-            editProfileDataVM.self.bio = updatedBio
-            
-            // Save the updated values to UserDefaults
-            UserDefaults.standard.set(updatedName, forKey: "name")
-            UserDefaults.standard.set(updatedBio, forKey: "bio")
-            UserDefaults.standard.synchronize() // Synchronize UserDefaults
-            
-            editProfileDataVM.saveButton?.isEnabled = false // Disable the save button again after saving
-            
-            // Update the text fields with the updated values
-            editProfileDataVM.nameTextField?.text = updatedName
-            editProfileDataVM.bioTextView?.text = updatedBio
-        } else {
-            editProfileDataVM.saveButton?.title = "Save"
-            editProfileDataVM.saveButton?.isEnabled = true // Enable the save button
-            
-        }
+        
+        // Assign initial value to locationTextField
+        editProfileDataVM.locationTextField!.text = Location
+        
+        // Add an observer for the text field's text property to detect changes
+        editProfileDataVM.locationTextField!.addTarget(self, action: #selector(locationTextFieldDidChange(_:)), for: .editingChanged)
     }
 
 
@@ -222,7 +243,7 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
             // Assign initial value to nameTextField
         editProfileDataVM.nameTextField!.text = name
 
-            // Add an observer for the text field's text property to detect changes
+     // Add an observer for the text field's text property to detect changes
         editProfileDataVM.nameTextField!.addTarget(self, action: #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
         }
 
@@ -238,9 +259,24 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
             print(textField.text as Any)
             
             // Update the name text field
-         //nameTextField?.text = text
+            //nameTextField?.text = text
         }
     }
+
+    @objc func locationTextFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            editProfileDataVM.updatedLocation = text // Update the updatedLocation property with the updated text
+            editProfileDataVM.delegate?.didUpdateLocation(text)
+            
+            print(textField.text as Any)
+            
+            // Update the location text field
+            //editProfileDataVM.locationTextField?.text = text
+        }
+    }
+
+    
+    
    
     func configureBioTextView() {
            // Create and add bio text view
@@ -276,6 +312,11 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
        }
 
 
+  
+    
+
+ 
+    
 
     func configureTwitterProfileImageViewHeader() {
         view.addSubview(editProfileDataVM.twitterProfileImageViewHeader)
@@ -312,23 +353,37 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
    }
     
     
+    
+    
     func textViewDidChange(_ textView: UITextView) {
        
         print(textView.text as Any)
         updatedBio = textView.text
         delegate?.didUpdateBio(textView.text)
+        
     }
 
 
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if var text = textField.text {
-        //    text = updatedName!
-            delegate?.didUpdateName(text)
+        if let text = textField.text {
+            if textField == editProfileDataVM.nameTextField {
+                editProfileDataVM.updatedName = text // Update the updatedName property
+                delegate?.didUpdateName(text) // Notify the delegate of the updated name
+            } else if textField == editProfileDataVM.locationTextField {
+                editProfileDataVM.updatedLocation = text // Update the updatedLocation property
+                delegate?.didUpdateLocation(text) // Notify the delegate of the updated location
+                
+                // Save the updated location to UserDefaults
+                UserDefaults.standard.set(text, forKey: "location")
+                UserDefaults.standard.synchronize()
+            }
         }
         
-        saveButton?.isEnabled = true
-      }
+        editProfileDataVM.saveButton?.isEnabled = true
+    }
+
+
 
       func textViewDidEndEditing(_ textView: UITextView) {
          
@@ -346,6 +401,11 @@ class editProfileViewModel: UIViewController, UITextFieldDelegate, UITextViewDel
               delegatee?.updateBio(bio) // Notify the delegate of the updated bio
           }
 
+        if let location = updatedLocation {
+            UserDefaults.standard.set(location, forKey: "location")
+            delegatee?.updateLocation(location)
+          
+        }
           UserDefaults.standard.synchronize()
       }
   

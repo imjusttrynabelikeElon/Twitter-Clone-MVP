@@ -205,7 +205,6 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
               // Use a default profile image or handle the case when the image data is not found
               twitterImageHeaderView.image =  UIImage(named: "defaultProfile")!
           }
-      
         
        
         // Remove this line
@@ -214,7 +213,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
                                           Name: UserManager.shared.name,
                                           userName: UserManager.shared.userName,
                                           Bio: UserManager.shared.bio,
-                                          location: UserManager.shared.location,
+                                          location: UserManager.shared.locationTextField?.text,
                                           locationImage: UIImageView(image: UIImage(systemName: "network")),
                                           link: "https://github.com/imjusttrynabelikeElon",
                                           linkImage: UIImageView(image: UIImage(systemName: "link")),
@@ -319,6 +318,16 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
        //editProfilee = updatedProfile // Assign the updated profile back to the constant
         }
 
+        profileLocation.text = editProfilee.location
+         // ...
+
+         // Retrieve the saved location from UserDefaults
+         if let location = UserDefaults.standard.string(forKey: "ProfileLocation") {
+             profileLocation.text = location
+             var updatedProfile = editProfilee
+             updatedProfile.location = location // Update the location property
+             // editProfilee = updatedProfile // Assign the updated profile back to the constant
+         }
 
      }
     
