@@ -52,7 +52,44 @@ Twitters ForYou Page TabBar
 
 
 
-<img width="624" alt="Screenshot 2023-05-06 at 5 06 43 PM" src="https://user-images.githubusercontent.com/106272587/236646575-3b11ca5f-aa04-41ce-b424-99cffa333153.png">
+![homeFeed](https://github.com/imjusttrynabelikeElon/Twitter-Clone-MVP/assets/106272587/0558ab52-18a6-455c-9956-8e96e06e52e1)
+
+
+
+
+Twitter Add A Tweet
+
+
+
+
+![addtweet-1](https://github.com/imjusttrynabelikeElon/Twitter-Clone-MVP/assets/106272587/62adece8-6077-4f2e-a162-5b555840cdd7)
+
+
+
+
+
+
+
+
+Heres the tweet added
+
+
+
+
+
+![tweetAdded-1](https://github.com/imjusttrynabelikeElon/Twitter-Clone-MVP/assets/106272587/f5064385-ff51-40a1-a595-4ba7fdd45a2e)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
