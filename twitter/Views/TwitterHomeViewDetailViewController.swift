@@ -71,7 +71,7 @@ class TwitterHomeViewDetailViewController: UIViewController {
     
     var likeImage: String?
     
-    
+    //
     var likeImageLabel: UILabel!
     
     

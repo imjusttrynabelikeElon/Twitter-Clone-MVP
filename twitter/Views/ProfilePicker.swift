@@ -178,7 +178,7 @@ class ProfilePicker: UIViewController, UIImagePickerControllerDelegate, UINaviga
         present(vc1, animated: true, completion: nil)
     }
 
-
+//
 
 
     

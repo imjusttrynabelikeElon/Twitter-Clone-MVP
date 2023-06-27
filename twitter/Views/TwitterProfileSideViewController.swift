@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-
+//
 
 struct sideProfileData {
     var name: String

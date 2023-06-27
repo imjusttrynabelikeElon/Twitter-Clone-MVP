@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import Combine
 
-
+//
 final class RegisterViewViewModel: ObservableObject {
 
     @Published var name: String?

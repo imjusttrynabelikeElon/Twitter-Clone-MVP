@@ -220,7 +220,7 @@ class TwitterProfileView: UIViewController, EditProfileDelegate, ProfileDataDele
               // Use a default profile image or handle the case when the image data is not found
               twitterImageHeaderView.image =  UIImage(named: "defaultProfile")!
           }
-        
+    //
        
         // Remove this line
         editProfileDefaults = editProfile(

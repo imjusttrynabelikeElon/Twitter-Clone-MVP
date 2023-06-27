@@ -54,7 +54,7 @@ class PrivacyAgrrementView: UIViewController, WKNavigationDelegate {
 
     // WKNavigationDelegate method to handle the loading of web pages
     
-    
+    //
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         

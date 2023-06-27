@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import Combine
-
+//
 
 
 class TwitterSignUpHomePage: UIViewController {
@@ -37,7 +37,7 @@ class TwitterSignUpHomePage: UIViewController {
     
     @IBOutlet weak var password: UITextField!
   
-    
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         

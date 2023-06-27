@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-
+//
 protocol EditProfileDelegate: AnyObject {
     func didUpdateProfileImage(_ image: UIImage?)
     func didUpdateName(_ name: String)

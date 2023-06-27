@@ -458,7 +458,7 @@ class twitterHomeFeedTableView: UITableViewController, UIViewControllerTransitio
         ])
     }
 
-    
+    //
     func configureSignOutButton() {
         signOutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right"), for: .normal)
            signOutButton.translatesAutoresizingMaskIntoConstraints = false
